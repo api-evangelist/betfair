@@ -1,0 +1,151 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Betfair
+providerId: betfair
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Betting Exchange
+- Sports Betting
+- Market Data
+- Plans
+description: >-
+  Betfair does not price the Exchange API on a per-call subscription. Access is
+  gated by an Application Key. A Delayed App Key is free and returns
+  delayed price data - it is intended for development and functional testing. A
+  Live App Key returns real-time data and is required for actual betting; Betfair
+  charges a one-off activation fee (commonly cited as GBP 299 for personal use;
+  a higher fee, often cited as GBP 499, applies to vendor/software keys). Once
+  live, the economic cost of using the exchange is the market commission Betfair
+  charges on net winnings (a market base rate, typically around 5% on the .com
+  exchange, adjustable by market base rate and the customer's discount rate),
+  not a per-request API fee. Betfair also monitors data usage and may apply Data
+  Request Charges to accounts whose weighted API data usage is high relative to
+  their betting activity. The Historic Data service is priced separately by
+  purchased package (a free Basic tier plus paid Advanced/Pro tiers).
+notes: >-
+  Activation fees and commission rates vary by jurisdiction, exchange
+  (.com / Italy / Spain / Australia), product, and over time. Verify current
+  App Key activation fees, commission/market base rates, and Historic Data
+  package prices on Betfair's developer and pricing pages during reconciliation.
+sources:
+- https://support.developer.betfair.com/hc/en-us/articles/115003864531-Are-there-any-costs-associated-with-API-access
+- https://support.developer.betfair.com/hc/en-us/articles/115003860331-How-do-I-activate-my-Live-App-Key
+- https://developer.betfair.com/
+- https://historicdata.betfair.com/
+plans:
+- id: betfair-delayed-app-key
+  name: Delayed Application Key
+  type: free
+  description: >-
+    Free Application Key for development and functional testing. Returns
+    delayed exchange price data (a variable delay applied to snapshots). No
+    activation fee. Use for building and testing against the Betting, Accounts,
+    and Heartbeat APIs before going live.
+  entries:
+  - label: Delayed App Key
+    name: delayed_app_key
+    type: flat
+    metric: key
+    limit: -1
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: free
+    userMultiplied: false
+  elements:
+  - name: Betting API (delayed prices)
+  - name: Accounts API
+  - name: Heartbeat API
+  - name: Development / Functional Testing
+- id: betfair-live-app-key
+  name: Live Application Key
+  type: paid
+  description: >-
+    Real-time Application Key required for live betting and real-time price
+    data, including the Exchange Stream API. Requires a one-off activation fee.
+    After activation there is no recurring per-call API charge; costs are driven
+    by exchange commission on winnings.
+  entries:
+  - label: Live App Key Activation (personal)
+    name: live_app_key_activation_personal
+    type: flat
+    metric: activation
+    limit: -1
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: one-off ~GBP 299 (verify current fee)
+    userMultiplied: false
+  - label: Live App Key Activation (vendor/software)
+    name: live_app_key_activation_vendor
+    type: flat
+    metric: activation
+    limit: -1
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: one-off ~GBP 499 (verify current fee)
+    userMultiplied: false
+  elements:
+  - name: Real-Time Betting API
+  - name: Exchange Stream API
+  - name: Live Prices
+- id: betfair-commission
+  name: Exchange Commission
+  type: usage
+  description: >-
+    The ongoing economic cost of trading on the exchange. Betfair charges
+    commission on net winnings in a market, computed from the market base rate
+    and the customer's discount rate. This is a wagering cost, not an API call
+    fee, but it is the dominant cost of operating an automated strategy.
+  entries:
+  - label: Market Commission on Net Winnings
+    name: market_commission
+    type: usage
+    metric: winnings
+    limit: -1
+    timeFrame: perMarket
+    geo: global
+    unit: 1
+    price: typically ~5% base rate on the .com exchange (varies by market/jurisdiction)
+    userMultiplied: false
+  elements:
+  - name: Market Base Rate
+  - name: Discount Rate
+- id: betfair-historic-data
+  name: Historic Data Packages
+  type: paid
+  description: >-
+    Historical exchange market data purchased as packages via
+    historicdata.betfair.com and then downloaded through the Historic Data API.
+    A free Basic tier exists alongside paid Advanced/Pro tiers with richer data.
+  entries:
+  - label: Basic Historic Data
+    name: historic_basic
+    type: flat
+    metric: package
+    limit: -1
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: free (Basic plan)
+    userMultiplied: false
+  - label: Advanced / Pro Historic Data
+    name: historic_advanced
+    type: usage
+    metric: package
+    limit: -1
+    timeFrame: lifetime
+    geo: global
+    unit: 1
+    price: per-package purchase (see historicdata.betfair.com)
+    userMultiplied: false
+  elements:
+  - name: Purchased Data Packages
+  - name: Advanced/Pro Market Data
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,237 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Betfair Exchange API (API-NG)",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": { "name": "Identity", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Login (interactive).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://identitysso.betfair.com/api/login",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": { "type": "text", "data": "username=&password=" }
+          },
+          "docs": "Interactive login. Returns a session token used as X-Authentication on exchange calls."
+        },
+        {
+          "info": { "name": "Keep Alive.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://identitysso.betfair.com/api/keepAlive",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" }
+            ]
+          },
+          "docs": "Refreshes the session token's inactivity timeout."
+        },
+        {
+          "info": { "name": "Logout.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://identitysso.betfair.com/api/logout",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" }
+            ]
+          },
+          "docs": "Invalidates the session token."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Betting (SportsAPING)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "listEventTypes.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"filter\": {} }" }
+          },
+          "docs": "Returns event types (sports) matching the market filter."
+        },
+        {
+          "info": { "name": "listMarketCatalogue.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"filter\": { \"eventTypeIds\": [\"1\"] }, \"marketProjection\": [\"RUNNER_DESCRIPTION\", \"EVENT\"], \"sort\": \"MAXIMUM_TRADED\", \"maxResults\": 10 }" }
+          },
+          "docs": "Returns published markets with runners/metadata. marketId and selectionId feed placeOrders."
+        },
+        {
+          "info": { "name": "listMarketBook.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"marketIds\": [\"1.234567890\"], \"priceProjection\": { \"priceData\": [\"EX_BEST_OFFERS\"] } }" }
+          },
+          "docs": "Returns live prices, status, and depth for a list of markets. Max request weighting 200."
+        },
+        {
+          "info": { "name": "listCurrentOrders.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listCurrentOrders/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Returns the customer's current (matched and unmatched) orders."
+        },
+        {
+          "info": { "name": "placeOrders.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"marketId\": \"1.234567890\", \"instructions\": [ { \"orderType\": \"LIMIT\", \"selectionId\": 47972, \"side\": \"BACK\", \"limitOrder\": { \"size\": 2.0, \"price\": 3.5, \"persistenceType\": \"LAPSE\" } } ] }" }
+          },
+          "docs": "Places one or more bets. Returns a betId per successful instruction."
+        },
+        {
+          "info": { "name": "cancelOrders.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/cancelOrders/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"marketId\": \"1.234567890\", \"instructions\": [ { \"betId\": \"298537625817\" } ] }" }
+          },
+          "docs": "Cancels unmatched bets, fully or partially."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Accounts (AccountAPING)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "getAccountFunds.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Returns available-to-bet balance, exposure, and commission info."
+        },
+        {
+          "info": { "name": "getAccountDetails.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Returns account name, currency, locale, region, timezone, and discount rate."
+        },
+        {
+          "info": { "name": "getAccountStatement.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getAccountStatement/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"includeItem\": \"EXCHANGE\" }" }
+          },
+          "docs": "Returns the ledger of financial transactions on the account."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Heartbeat (HeartbeatAPING)", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "heartbeat.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/heartbeat/rest/v1.0/heartbeat/",
+            "headers": [
+              { "name": "X-Application", "value": "{{appKey}}" },
+              { "name": "X-Authentication", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"preferredTimeoutSeconds\": 60 }" }
+          },
+          "docs": "Dead man's switch. If Betfair stops receiving heartbeats within the timeout it cancels unmatched bets."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Historic Data", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "GetMyData.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://historicdata.betfair.com/api/GetMyData",
+            "headers": [
+              { "name": "ssoid", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Returns the historical data packages the customer has purchased."
+        },
+        {
+          "info": { "name": "DownloadListOfFiles.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://historicdata.betfair.com/api/DownloadListOfFiles",
+            "headers": [
+              { "name": "ssoid", "value": "{{sessionToken}}" },
+              { "name": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "type": "json", "data": "{ \"sport\": \"Horse Racing\", \"plan\": \"Basic Plan\", \"fromDay\": 1, \"fromMonth\": 1, \"fromYear\": 2024, \"toDay\": 31, \"toMonth\": 1, \"toYear\": 2024 }" }
+          },
+          "docs": "Returns a list of downloadable file paths matching a filter."
+        }
+      ]
+    }
+  ]
+}

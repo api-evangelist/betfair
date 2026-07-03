@@ -1,0 +1,479 @@
+asyncapi: '2.6.0'
+id: 'urn:com:betfair:exchange:stream-api'
+info:
+  title: Betfair Exchange Stream API (SSL/TCP)
+  version: '1.0.0'
+  description: |
+    AsyncAPI 2.6 description of the Betfair **Exchange Stream API** - Betfair's
+    low-latency, subscription-based push channel for market and order changes.
+
+    IMPORTANT TRANSPORT NOTE: this is **NOT a WebSocket API**. The Exchange
+    Stream API is a persistent **raw SSL/TCP socket** to
+    `stream-api.betfair.com` on **port 443**, over which messages are exchanged
+    as **CRLF-delimited JSON** - one complete JSON object per line, terminated
+    by `\r\n`, with JSON pretty-printing turned off. Betfair's own
+    documentation states that any attempted WebSocket connection will be
+    refused. `secure-tcp` is used as the AsyncAPI server protocol; the exact
+    socket semantics are documented here and in `info.x-transport-notes`.
+
+    Flow: open the SSL socket, read the initial `connection` message, send an
+    `authentication` request (appKey + session token), then send
+    `marketSubscription` and/or `orderSubscription` requests. The server then
+    pushes `mcm` (market change) and `ocm` (order change) messages plus periodic
+    `status` and `heartbeat` frames. A `heartbeat` request may be sent to keep
+    the socket alive; a message must be sent within 15 seconds of connecting or
+    the server returns a TIMEOUT status.
+
+    Every RequestMessage carries a client-supplied integer `id`, echoed back on
+    the corresponding `status` ResponseMessage. The `op` field on every message
+    identifies its type for correct (de)serialization.
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Betfair Developer Program Terms
+    url: https://developer.betfair.com/
+  x-transport-notes:
+    transport: Raw SSL/TCP socket (persistent)
+    host: stream-api.betfair.com
+    integrationHost: stream-api-integration.betfair.com
+    port: 443
+    framing: CRLF-delimited JSON (one JSON object per line, terminated by \r\n)
+    prettyPrint: must be disabled
+    isWebSocket: false
+    webSocketRefused: true
+    connectTimeoutSeconds: 15
+    source: https://github.com/betfair/stream-api-sample-code
+defaultContentType: application/json
+servers:
+  production:
+    url: stream-api.betfair.com:443
+    protocol: secure-tcp
+    description: |
+      Production Exchange Stream endpoint. Establish an SSL/TLS socket to this
+      host:port and exchange CRLF-delimited JSON messages. This is a raw TCP
+      socket over SSL - not WebSocket and not HTTP.
+  integration:
+    url: stream-api-integration.betfair.com:443
+    protocol: secure-tcp
+    description: Integration/test Exchange Stream endpoint with the same protocol.
+channels:
+  authentication:
+    description: |
+      Client -> server request that authenticates the socket using the
+      Application Key and the session token (ssoid) from identity SSO login.
+      Must be sent before any subscription. The server replies with a `status`
+      message on the response stream.
+    publish:
+      operationId: sendAuthentication
+      summary: Authenticate the stream connection.
+      message:
+        $ref: '#/components/messages/AuthenticationMessage'
+  marketSubscription:
+    description: |
+      Client -> server request subscribing to market changes for a set of
+      markets (via a marketFilter) at a chosen priceData/ladder level (via a
+      marketDataFilter). The server then pushes `mcm` messages on the change
+      stream.
+    publish:
+      operationId: sendMarketSubscription
+      summary: Subscribe to market changes.
+      message:
+        $ref: '#/components/messages/MarketSubscriptionMessage'
+  orderSubscription:
+    description: |
+      Client -> server request subscribing to the customer's order changes. The
+      server then pushes `ocm` messages on the change stream.
+    publish:
+      operationId: sendOrderSubscription
+      summary: Subscribe to order changes.
+      message:
+        $ref: '#/components/messages/OrderSubscriptionMessage'
+  heartbeatRequest:
+    description: |
+      Client -> server keep-alive request (op=heartbeat). Used to keep the
+      socket active and detect a broken connection; the server replies with a
+      `status` message.
+    publish:
+      operationId: sendHeartbeat
+      summary: Send a keep-alive heartbeat request.
+      message:
+        $ref: '#/components/messages/HeartbeatRequestMessage'
+  connectionStream:
+    description: Server -> client initial `connection` message sent on socket open, carrying the connectionId.
+    subscribe:
+      operationId: receiveConnection
+      summary: Receive the initial connection frame.
+      message:
+        $ref: '#/components/messages/ConnectionMessage'
+  statusStream:
+    description: |
+      Server -> client `status` messages - the acknowledgement/response to a
+      request `id`, plus connection health (connectionsAvailable) and error
+      details (statusCode, errorCode, errorMessage).
+    subscribe:
+      operationId: receiveStatus
+      summary: Receive status / acknowledgement frames.
+      message:
+        $ref: '#/components/messages/StatusMessage'
+  marketChangeStream:
+    description: Server -> client `mcm` (Market Change Message) frames pushing price/status deltas for subscribed markets.
+    subscribe:
+      operationId: receiveMarketChange
+      summary: Receive market change messages.
+      message:
+        $ref: '#/components/messages/MarketChangeMessage'
+  orderChangeStream:
+    description: Server -> client `ocm` (Order Change Message) frames pushing order/matched deltas for the customer.
+    subscribe:
+      operationId: receiveOrderChange
+      summary: Receive order change messages.
+      message:
+        $ref: '#/components/messages/OrderChangeMessage'
+components:
+  messages:
+    AuthenticationMessage:
+      name: authentication
+      title: Authentication request
+      summary: Authenticates the socket with appKey + session token.
+      contentType: application/json
+      payload:
+        type: object
+        required: [op, id, appKey, session]
+        properties:
+          op:
+            type: string
+            enum: [authentication]
+          id:
+            type: integer
+            description: Client-supplied request id, echoed on the status response.
+          appKey:
+            type: string
+          session:
+            type: string
+            description: Session token (ssoid) from identity SSO login.
+      examples:
+        - name: auth
+          payload:
+            op: authentication
+            id: 1
+            appKey: 'YOUR_APP_KEY'
+            session: 'YOUR_SESSION_TOKEN'
+    MarketSubscriptionMessage:
+      name: marketSubscription
+      title: Market subscription request
+      contentType: application/json
+      payload:
+        type: object
+        required: [op, id]
+        properties:
+          op:
+            type: string
+            enum: [marketSubscription]
+          id:
+            type: integer
+          marketFilter:
+            type: object
+            properties:
+              marketIds:
+                type: array
+                items:
+                  type: string
+              eventTypeIds:
+                type: array
+                items:
+                  type: string
+              countryCodes:
+                type: array
+                items:
+                  type: string
+              marketTypes:
+                type: array
+                items:
+                  type: string
+          marketDataFilter:
+            type: object
+            properties:
+              ladderLevels:
+                type: integer
+                maximum: 10
+              fields:
+                type: array
+                items:
+                  type: string
+                  enum: [EX_BEST_OFFERS, EX_ALL_OFFERS, EX_TRADED, EX_TRADED_VOL, EX_LTP, EX_MARKET_DEF, SP_TRADED, SP_PROJECTED, EX_BEST_OFFERS_DISP]
+          conflateMs:
+            type: integer
+          heartbeatMs:
+            type: integer
+      examples:
+        - name: marketSub
+          payload:
+            op: marketSubscription
+            id: 2
+            marketFilter:
+              marketIds: ['1.234567890']
+            marketDataFilter:
+              ladderLevels: 3
+              fields: [EX_BEST_OFFERS, EX_LTP]
+    OrderSubscriptionMessage:
+      name: orderSubscription
+      title: Order subscription request
+      contentType: application/json
+      payload:
+        type: object
+        required: [op, id]
+        properties:
+          op:
+            type: string
+            enum: [orderSubscription]
+          id:
+            type: integer
+          orderFilter:
+            type: object
+            properties:
+              includeOverallPosition:
+                type: boolean
+              partitionMatchedByStrategyRef:
+                type: boolean
+          conflateMs:
+            type: integer
+          heartbeatMs:
+            type: integer
+    HeartbeatRequestMessage:
+      name: heartbeatRequest
+      title: Heartbeat request
+      contentType: application/json
+      payload:
+        type: object
+        required: [op, id]
+        properties:
+          op:
+            type: string
+            enum: [heartbeat]
+          id:
+            type: integer
+    ConnectionMessage:
+      name: connection
+      title: Connection frame
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          op:
+            type: string
+            enum: [connection]
+          connectionId:
+            type: string
+      examples:
+        - name: connection
+          payload:
+            op: connection
+            connectionId: '206-221216154618-94060'
+    StatusMessage:
+      name: status
+      title: Status / acknowledgement frame
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          op:
+            type: string
+            enum: [status]
+          id:
+            type: integer
+            description: Echoes the request id being acknowledged.
+          statusCode:
+            type: string
+            enum: [SUCCESS, FAILURE]
+          errorCode:
+            type: string
+            enum:
+              - NO_APP_KEY
+              - INVALID_APP_KEY
+              - NO_SESSION
+              - INVALID_SESSION_INFORMATION
+              - NOT_AUTHORIZED
+              - INVALID_INPUT
+              - INVALID_CLOCK
+              - UNEXPECTED_ERROR
+              - TIMEOUT
+              - SUBSCRIPTION_LIMIT_EXCEEDED
+              - INVALID_REQUEST
+              - CONNECTION_FAILED
+              - MAX_CONNECTION_LIMIT_EXCEEDED
+              - TOO_MANY_REQUESTS
+          errorMessage:
+            type: string
+          connectionClosed:
+            type: boolean
+          connectionsAvailable:
+            type: integer
+      examples:
+        - name: ok
+          payload:
+            op: status
+            id: 1
+            statusCode: SUCCESS
+            connectionClosed: false
+    MarketChangeMessage:
+      name: mcm
+      title: Market Change Message
+      summary: Push of market price/status deltas.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          op:
+            type: string
+            enum: [mcm]
+          id:
+            type: integer
+          ct:
+            type: string
+            enum: [SUB_IMAGE, RESUB_DELTA, HEARTBEAT]
+            description: Change type; absent for a normal delta.
+          clk:
+            type: string
+            description: Sequence token for this stream position.
+          initialClk:
+            type: string
+          conflateMs:
+            type: integer
+          heartbeatMs:
+            type: integer
+          pt:
+            type: integer
+            format: int64
+            description: Publish time (epoch millis).
+          mc:
+            type: array
+            description: Array of market changes.
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Market id.
+                con:
+                  type: boolean
+                  description: Whether the data is conflated.
+                img:
+                  type: boolean
+                  description: Whether this is a full image (replace) vs delta.
+                tv:
+                  type: number
+                  description: Total value/volume matched.
+                marketDefinition:
+                  type: object
+                rc:
+                  type: array
+                  description: Runner changes.
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                        description: selectionId.
+                      ltp:
+                        type: number
+                        description: Last traded price.
+                      tv:
+                        type: number
+                      batb:
+                        type: array
+                        description: Best available to back [level, price, size].
+                        items:
+                          type: array
+                          items:
+                            type: number
+                      batl:
+                        type: array
+                        description: Best available to lay [level, price, size].
+                        items:
+                          type: array
+                          items:
+                            type: number
+      examples:
+        - name: heartbeatFrame
+          payload:
+            op: mcm
+            id: 2
+            ct: HEARTBEAT
+            clk: 'AAAAAAAA'
+            pt: 1671205578000
+        - name: delta
+          payload:
+            op: mcm
+            id: 2
+            clk: 'ABAQAB'
+            pt: 1671205579000
+            mc:
+              - id: '1.234567890'
+                tv: 12345.67
+                rc:
+                  - id: 47972
+                    ltp: 3.4
+                    batb: [[0, 3.35, 120.0]]
+                    batl: [[0, 3.45, 90.0]]
+    OrderChangeMessage:
+      name: ocm
+      title: Order Change Message
+      summary: Push of the customer's order/matched deltas.
+      contentType: application/json
+      payload:
+        type: object
+        properties:
+          op:
+            type: string
+            enum: [ocm]
+          id:
+            type: integer
+          ct:
+            type: string
+            enum: [SUB_IMAGE, RESUB_DELTA, HEARTBEAT]
+          clk:
+            type: string
+          pt:
+            type: integer
+            format: int64
+          oc:
+            type: array
+            description: Order changes by market.
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Market id.
+                orc:
+                  type: array
+                  description: Order runner changes.
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                        description: selectionId.
+                      uo:
+                        type: array
+                        description: Unmatched orders.
+                        items:
+                          type: object
+                      mb:
+                        type: array
+                        description: Matched backs [price, size].
+                        items:
+                          type: array
+                          items:
+                            type: number
+                      ml:
+                        type: array
+                        description: Matched lays [price, size].
+                        items:
+                          type: array
+                          items:
+                            type: number

@@ -1,0 +1,262 @@
+{
+  "info": {
+    "name": "Betfair Exchange API (API-NG)",
+    "description": "The Betfair Exchange API as lightweight REST/JSON-RPC over HTTPS. Betting (SportsAPING), Accounts (AccountAPING), and Heartbeat (HeartbeatAPING) operations under https://api.betfair.com/exchange, plus identity SSO login and the Historic Data API. Every exchange call requires the X-Application (app key) and X-Authentication (session token) headers. The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, not WebSocket) and is not represented here.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "exchangeBase", "value": "https://api.betfair.com/exchange", "type": "string" },
+    { "key": "identityBase", "value": "https://identitysso.betfair.com/api", "type": "string" },
+    { "key": "historicBase", "value": "https://historicdata.betfair.com/api", "type": "string" },
+    { "key": "appKey", "value": "", "type": "string" },
+    { "key": "sessionToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Identity",
+      "item": [
+        {
+          "name": "Login (interactive)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "urlencoded", "urlencoded": [
+              { "key": "username", "value": "" },
+              { "key": "password", "value": "" }
+            ] },
+            "url": { "raw": "{{identityBase}}/login", "host": ["{{identityBase}}"], "path": ["login"] },
+            "description": "Interactive login. Returns a session token used as X-Authentication on exchange calls."
+          }
+        },
+        {
+          "name": "Keep Alive",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": { "raw": "{{identityBase}}/keepAlive", "host": ["{{identityBase}}"], "path": ["keepAlive"] },
+            "description": "Refreshes the session token's inactivity timeout."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": { "raw": "{{identityBase}}/logout", "host": ["{{identityBase}}"], "path": ["logout"] },
+            "description": "Invalidates the session token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Betting (SportsAPING)",
+      "item": [
+        {
+          "name": "listEventTypes",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"filter\": {}\n}" },
+            "url": { "raw": "{{exchangeBase}}/betting/rest/v1.0/listEventTypes/", "host": ["{{exchangeBase}}"], "path": ["betting", "rest", "v1.0", "listEventTypes", ""] },
+            "description": "Returns event types (sports) matching the market filter."
+          }
+        },
+        {
+          "name": "listMarketCatalogue",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"filter\": { \"eventTypeIds\": [\"1\"] },\n  \"marketProjection\": [\"RUNNER_DESCRIPTION\", \"EVENT\"],\n  \"sort\": \"MAXIMUM_TRADED\",\n  \"maxResults\": 10\n}" },
+            "url": { "raw": "{{exchangeBase}}/betting/rest/v1.0/listMarketCatalogue/", "host": ["{{exchangeBase}}"], "path": ["betting", "rest", "v1.0", "listMarketCatalogue", ""] },
+            "description": "Returns published markets with runners/metadata. marketId and selectionId feed placeOrders."
+          }
+        },
+        {
+          "name": "listMarketBook",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"marketIds\": [\"1.234567890\"],\n  \"priceProjection\": { \"priceData\": [\"EX_BEST_OFFERS\"] }\n}" },
+            "url": { "raw": "{{exchangeBase}}/betting/rest/v1.0/listMarketBook/", "host": ["{{exchangeBase}}"], "path": ["betting", "rest", "v1.0", "listMarketBook", ""] },
+            "description": "Returns live prices, status, and depth for a list of markets. Max request weighting 200."
+          }
+        },
+        {
+          "name": "listCurrentOrders",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{exchangeBase}}/betting/rest/v1.0/listCurrentOrders/", "host": ["{{exchangeBase}}"], "path": ["betting", "rest", "v1.0", "listCurrentOrders", ""] },
+            "description": "Returns the customer's current (matched and unmatched) orders."
+          }
+        },
+        {
+          "name": "placeOrders",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"marketId\": \"1.234567890\",\n  \"instructions\": [\n    {\n      \"orderType\": \"LIMIT\",\n      \"selectionId\": 47972,\n      \"side\": \"BACK\",\n      \"limitOrder\": { \"size\": 2.0, \"price\": 3.5, \"persistenceType\": \"LAPSE\" }\n    }\n  ]\n}" },
+            "url": { "raw": "{{exchangeBase}}/betting/rest/v1.0/placeOrders/", "host": ["{{exchangeBase}}"], "path": ["betting", "rest", "v1.0", "placeOrders", ""] },
+            "description": "Places one or more bets. Returns a betId per successful instruction."
+          }
+        },
+        {
+          "name": "cancelOrders",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"marketId\": \"1.234567890\",\n  \"instructions\": [ { \"betId\": \"298537625817\" } ]\n}" },
+            "url": { "raw": "{{exchangeBase}}/betting/rest/v1.0/cancelOrders/", "host": ["{{exchangeBase}}"], "path": ["betting", "rest", "v1.0", "cancelOrders", ""] },
+            "description": "Cancels unmatched bets, fully or partially."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Accounts (AccountAPING)",
+      "item": [
+        {
+          "name": "getAccountFunds",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{exchangeBase}}/account/rest/v1.0/getAccountFunds/", "host": ["{{exchangeBase}}"], "path": ["account", "rest", "v1.0", "getAccountFunds", ""] },
+            "description": "Returns available-to-bet balance, exposure, and commission info."
+          }
+        },
+        {
+          "name": "getAccountDetails",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{exchangeBase}}/account/rest/v1.0/getAccountDetails/", "host": ["{{exchangeBase}}"], "path": ["account", "rest", "v1.0", "getAccountDetails", ""] },
+            "description": "Returns account name, currency, locale, region, timezone, and discount rate."
+          }
+        },
+        {
+          "name": "getAccountStatement",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"includeItem\": \"EXCHANGE\"\n}" },
+            "url": { "raw": "{{exchangeBase}}/account/rest/v1.0/getAccountStatement/", "host": ["{{exchangeBase}}"], "path": ["account", "rest", "v1.0", "getAccountStatement", ""] },
+            "description": "Returns the ledger of financial transactions on the account."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Heartbeat (HeartbeatAPING)",
+      "item": [
+        {
+          "name": "heartbeat",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "X-Application", "value": "{{appKey}}" },
+              { "key": "X-Authentication", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"preferredTimeoutSeconds\": 60\n}" },
+            "url": { "raw": "{{exchangeBase}}/heartbeat/rest/v1.0/heartbeat/", "host": ["{{exchangeBase}}"], "path": ["heartbeat", "rest", "v1.0", "heartbeat", ""] },
+            "description": "Dead man's switch. If Betfair stops receiving heartbeats within the timeout it cancels unmatched bets."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Historic Data",
+      "item": [
+        {
+          "name": "GetMyData",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "ssoid", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{historicBase}}/GetMyData", "host": ["{{historicBase}}"], "path": ["GetMyData"] },
+            "description": "Returns the historical data packages the customer has purchased."
+          }
+        },
+        {
+          "name": "DownloadListOfFiles",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "ssoid", "value": "{{sessionToken}}" },
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"sport\": \"Horse Racing\",\n  \"plan\": \"Basic Plan\",\n  \"fromDay\": 1, \"fromMonth\": 1, \"fromYear\": 2024,\n  \"toDay\": 31, \"toMonth\": 1, \"toYear\": 2024\n}" },
+            "url": { "raw": "{{historicBase}}/DownloadListOfFiles", "host": ["{{historicBase}}"], "path": ["DownloadListOfFiles"] },
+            "description": "Returns a list of downloadable file paths matching a filter."
+          }
+        }
+      ]
+    }
+  ]
+}

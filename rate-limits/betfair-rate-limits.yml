@@ -1,0 +1,97 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Betfair
+providerId: betfair
+created: '2026-07-03'
+modified: '2026-07-03'
+reconciled: false
+tags:
+- Betting Exchange
+- Market Data
+- Rate Limiting
+- Quotas
+- Streaming
+description: >-
+  Betfair governs Exchange API usage through a combination of per-operation
+  transaction limits, market-data request weighting, session lifecycle rules,
+  and stream-connection limits rather than a single global requests-per-second
+  quota. Market data requests (listMarketBook / listRunnerBook) are weighted,
+  and a single request has a maximum weighting of 200 (the weighting grows with
+  the number of markets/runners and the price data requested). Bet-placement
+  operations are subject to transaction limits and Betfair monitors accounts
+  whose weighted data usage is disproportionate to their betting activity
+  (Data Request Charges). Session tokens expire after an inactivity period and
+  must be refreshed with keepAlive. On the Exchange Stream API, a client must
+  send a message within 15 seconds of connecting or the server returns a
+  TIMEOUT; the number of concurrent stream connections is capped per account
+  (reported to the client as connectionsAvailable), and exceeding subscription
+  or connection limits returns SUBSCRIPTION_LIMIT_EXCEEDED /
+  MAX_CONNECTION_LIMIT_EXCEEDED.
+notes: >-
+  Betfair does not publish a single fixed numeric requests-per-second cap for
+  the Betting/Accounts REST and JSON-RPC surfaces; limits are expressed as data
+  weighting, transaction counts, and error codes (TOO_MANY_REQUESTS,
+  TOO_MUCH_DATA, SERVICE_BUSY). Exact per-account transaction ceilings, session
+  timeouts (which vary by jurisdiction), and stream connection counts should be
+  confirmed against Betfair's current documentation during reconciliation.
+sources:
+- https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Betting+API
+- https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Exchange+Stream+API
+- https://github.com/betfair/stream-api-sample-code
+- https://developer.betfair.com/en/exchange-api/faq/
+responseCodes:
+  throttled: 429
+  errorCodes:
+  - TOO_MANY_REQUESTS
+  - TOO_MUCH_DATA
+  - SERVICE_BUSY
+  - TIMEOUT_ERROR
+limits:
+- name: Market Data Request Weighting
+  scope: request
+  metric: weight
+  limit: 200 max per request
+  notes: listMarketBook/listRunnerBook requests are weighted; a single request may not exceed a weighting of 200. Weighting grows with market/runner count and price data requested.
+- name: Betting REST/JSON-RPC Requests
+  scope: account
+  metric: requests
+  limit: not published (monitored)
+  notes: No fixed numeric per-second cap is published; excessive use returns TOO_MANY_REQUESTS / SERVICE_BUSY. Betfair applies Data Request Charges when weighted data usage is high relative to betting activity.
+- name: placeOrders Instructions
+  scope: request
+  metric: instructions
+  limit: bounded per request
+  notes: A single placeOrders call carries a bounded number of instructions per market; batch bets rather than issuing many single-bet calls.
+- name: Session Token Lifetime
+  scope: session
+  metric: inactivity
+  limit: jurisdiction-dependent
+  notes: Session tokens expire after an inactivity period (shorter for Italian/Spanish exchanges); call keepAlive to refresh before expiry.
+- name: Stream Connect Timeout
+  scope: connection
+  metric: seconds
+  limit: 15
+  notes: On the Exchange Stream API a message must be sent within 15 seconds of connecting or the server returns a TIMEOUT status.
+- name: Stream Concurrent Connections
+  scope: account
+  metric: connections
+  limit: capped (connectionsAvailable)
+  notes: Concurrent stream connections are capped per account; the remaining allowance is reported as connectionsAvailable, and exceeding it returns MAX_CONNECTION_LIMIT_EXCEEDED.
+- name: Stream Subscriptions
+  scope: connection
+  metric: subscriptions
+  limit: capped
+  notes: Exceeding the per-connection subscription limit returns SUBSCRIPTION_LIMIT_EXCEEDED.
+policies:
+- name: Data Request Charges
+  description: Betfair may charge accounts whose weighted API data usage is disproportionately high relative to their betting turnover, incentivizing efficient use of the Stream API over aggressive polling.
+- name: Prefer Streaming Over Polling
+  description: For low-latency needs Betfair directs clients to the Exchange Stream API (subscription push) instead of repeatedly polling listMarketBook, reducing data weighting.
+- name: Session Keep-Alive
+  description: Refresh the session token with keepAlive before its inactivity timeout; a new login is required once a token has expired.
+- name: Backoff on Errors
+  description: On TOO_MANY_REQUESTS / SERVICE_BUSY / TIMEOUT_ERROR, back off with jitter and retry; do not hammer the endpoint.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

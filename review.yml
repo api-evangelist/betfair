@@ -1,0 +1,154 @@
+aid: betfair
+name: Betfair
+review:
+  question: Does Betfair expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-03'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: true
+  asyncapiScopeNote: |
+    An AsyncAPI 2.6 document was authored at asyncapi/betfair-asyncapi.yml, but
+    NOT because Betfair offers WebSocket. It models the Exchange Stream API,
+    which is a real streaming server-push transport - however that transport is
+    a raw SSL/TCP socket (CRLF-delimited JSON), not WebSocket. The AsyncAPI
+    server protocol is set to `secure-tcp` and info.x-transport-notes plus the
+    channel descriptions state explicitly that this is a raw TCP-over-SSL socket
+    on stream-api.betfair.com:443 and that Betfair refuses WebSocket
+    connections. The document is included because the Stream API is a genuine
+    asynchronous, subscription-based push channel worth modeling; the transport
+    is never represented as WebSocket.
+findings:
+  summary: |
+    Betfair does NOT publish a documented public WebSocket API. The Betfair
+    Exchange API (API-NG) is a request/response HTTP API exposed as lightweight
+    JSON-RPC 2.0 and per-operation REST over HTTPS under
+    https://api.betfair.com/exchange, split into the Betting API (SportsAPING),
+    the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING).
+    Authentication uses an Application Key (X-Application) plus a session token /
+    ssoid (X-Authentication) obtained from Betfair identity SSO login
+    (identitysso.betfair.com). A Historic Data API (REST over HTTPS at
+    historicdata.betfair.com) and a licensed Web Vendor Facility (OAuth2 for
+    third-party web betting apps) complete the platform.
+
+    Betfair DOES offer a real-time streaming API - the Exchange Stream API - but
+    it is a persistent raw SSL/TCP socket to stream-api.betfair.com on port 443,
+    exchanging CRLF-delimited JSON (one JSON object per line). Betfair's own
+    documentation and support state that this is a normal SSL socket and that
+    any attempted WebSocket connection will be refused. So while there is a
+    streaming/server-push transport, it is NOT WebSocket (no ws:// or wss://
+    endpoint is documented anywhere).
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.betfair.com/exchange
+      documented: true
+      note: Per-operation REST for Betting (/betting/rest/v1.0/), Accounts (/account/rest/v1.0/), and Heartbeat (/heartbeat/rest/v1.0/). Each operation is an HTTP POST with a JSON body.
+    - protocol: JSON-RPC
+      scheme: https
+      baseURL: https://api.betfair.com/exchange
+      documented: true
+      note: JSON-RPC 2.0 at /betting/json-rpc/v1, /account/json-rpc/v1, /heartbeat/json-rpc/v1 with method names like SportsAPING/v1.0/listMarketCatalogue.
+    - protocol: Secure TCP Stream (SSL socket, CRLF-delimited JSON)
+      scheme: tcp+ssl
+      baseURL: stream-api.betfair.com:443
+      documented: true
+      note: >-
+        Exchange Stream API. A persistent raw SSL/TCP socket carrying
+        newline (CRLF) delimited JSON messages (authentication,
+        marketSubscription, orderSubscription, heartbeat requests; connection,
+        status, mcm, ocm responses). This is server-push streaming but it is
+        NOT WebSocket - Betfair explicitly refuses WebSocket connections.
+    - protocol: OAuth2 (Web Vendor Facility)
+      scheme: https
+      documented: true
+      note: Authorization-code style flow so licensed vendor web apps can act on a customer's behalf. HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: >-
+        No WebSocket (ws:// or wss://) endpoint is documented anywhere in the
+        Betfair Exchange API. The only streaming surface is the Exchange Stream
+        API, which is a raw SSL/TCP socket and explicitly refuses WebSocket
+        connections per Betfair support ("Does the Stream API allow Web Socket
+        connections?" - no).
+  endpointsConfirmedRest:
+    - POST https://identitysso.betfair.com/api/login
+    - POST https://identitysso.betfair.com/api/keepAlive
+    - POST https://identitysso.betfair.com/api/logout
+    - POST https://identitysso-cert.betfair.com/api/certlogin
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listCompetitions/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listEvents/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listMarketTypes/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listRunnerBook/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listCurrentOrders/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/listClearedOrders/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/cancelOrders/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/replaceOrders/
+    - POST https://api.betfair.com/exchange/betting/rest/v1.0/updateOrders/
+    - POST https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/
+    - POST https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/
+    - POST https://api.betfair.com/exchange/account/rest/v1.0/getAccountStatement/
+    - POST https://api.betfair.com/exchange/account/rest/v1.0/listCurrencyRates/
+    - POST https://api.betfair.com/exchange/account/rest/v1.0/getDeveloperAppKeys/
+    - POST https://api.betfair.com/exchange/heartbeat/rest/v1.0/heartbeat/
+    - POST https://historicdata.betfair.com/api/GetMyData
+    - POST https://historicdata.betfair.com/api/GetCollectionOptions
+    - POST https://historicdata.betfair.com/api/GetAdvBasketDataSize
+    - POST https://historicdata.betfair.com/api/DownloadListOfFiles
+    - GET  https://historicdata.betfair.com/api/DownloadFile
+  endpointsModeledStream:
+    - stream-api.betfair.com:443 (SSL socket) - authentication request
+    - stream-api.betfair.com:443 (SSL socket) - marketSubscription request
+    - stream-api.betfair.com:443 (SSL socket) - orderSubscription request
+    - stream-api.betfair.com:443 (SSL socket) - heartbeat request
+    - stream-api.betfair.com:443 (SSL socket) - connection / status / mcm / ocm responses
+  endpointsNote: |
+    The Betting/Accounts/Heartbeat REST paths and the identity SSO endpoints are
+    confirmed against Betfair's published API reference and are documented as
+    both JSON-RPC and REST. Request/response field sets in the OpenAPI are
+    simplified to primary fields (representative), not exhaustive. The Exchange
+    Stream API message shapes (mcm/ocm compressed field names like batb/batl,
+    ltp, tv) are modeled from Betfair's stream-api sample code and Swagger
+    schema. The Vendor API OAuth2 endpoints are documented conceptually but not
+    enumerated here.
+sources:
+  - url: https://developer.betfair.com/
+    type: Documentation
+    note: Betfair Developer Program hub listing the Exchange API, Historic Data, and Vendor programs.
+  - url: https://developer.betfair.com/exchange-api/
+    type: Documentation
+    note: Guide to the Exchange API - Betting API and Accounts API over JSON/JSON-RPC, plus the Exchange Stream API for low-latency updates.
+  - url: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/API+Overview
+    type: APIReference
+    note: API-NG overview - JSON-RPC and REST, app key + session token auth (returned HTTP 403 to automated fetch; corroborated via search and mirror docs).
+  - url: https://docs.developer.betfair.com/display/1smk3cen4v3lu3yomq5qye0ni/Exchange+Stream+API
+    type: Documentation
+    note: Exchange Stream API - SSL socket, CRLF-delimited JSON, subscription push.
+  - url: https://github.com/betfair/stream-api-sample-code
+    type: SourceCode
+    note: Official stream sample code - confirms SSL socket to stream-api.betfair.com:443, CRLF JSON, integration host, 15s connect timeout, and message ops.
+  - url: https://support.developer.betfair.com/hc/en-us/articles/12937897844252-Does-the-Stream-API-allow-Web-Socket-connections
+    type: Documentation
+    note: Betfair support - the Stream API does NOT allow WebSocket connections; it is an SSL socket protocol.
+  - url: https://support.developer.betfair.com/hc/en-us/articles/115003864531-Are-there-any-costs-associated-with-API-access
+    type: Documentation
+    note: Costs - Delayed App Key is free; Live App Key requires a one-off activation fee.
+  - url: https://historicdata.betfair.com/
+    type: Documentation
+    note: Historic Data service - purchase packages, download via the Historic Data API (GetMyData, DownloadFile, etc.).
+actions:
+  asyncapiPath: asyncapi/betfair-asyncapi.yml
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists, so the WebSocket answer is FALSE.
+    However, Betfair does operate a genuine real-time server-push channel (the
+    Exchange Stream API) over a raw SSL/TCP socket with CRLF-delimited JSON. An
+    AsyncAPI 2.6 document was authored for that stream, with the transport
+    labeled secure-tcp and documented throughout (server protocol,
+    x-transport-notes, channel descriptions) as a raw SSL socket that is NOT
+    WebSocket and that refuses WebSocket connections, so the streaming surface
+    is captured without being misrepresented as WebSocket.
