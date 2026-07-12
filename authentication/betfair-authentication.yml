@@ -1,0 +1,23 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/betfair-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: appKey
+  type: apiKey
+  in: header
+  parameter: X-Application
+  description: The developer Application Key (delayed or live).
+  sources:
+  - openapi/betfair-openapi.yml
+- name: sessionToken
+  type: apiKey
+  in: header
+  parameter: X-Authentication
+  description: The session token (ssoid) obtained from identity SSO login.
+  sources:
+  - openapi/betfair-openapi.yml

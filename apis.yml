@@ -162,6 +162,10 @@ apis:
     Betfair customer's behalf, with the vendor able to charge subscriptions via
     application subscription tokens.
 common:
+- type: DomainSecurity
+  url: security/betfair-domain-security.yml
+- type: Authentication
+  url: authentication/betfair-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/betfair
 - type: Website
