@@ -162,6 +162,8 @@ apis:
     Betfair customer's behalf, with the vendor able to charge subscriptions via
     application subscription tokens.
 common:
+- type: AgenticAccess
+  url: agentic-access/betfair-agentic-access.yml
 - type: DomainSecurity
   url: security/betfair-domain-security.yml
 - type: Authentication
