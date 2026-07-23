@@ -1,0 +1,130 @@
+openapi: 3.0.3
+info:
+  title: Betfair Exchange API (API-NG) Accounts Identity API
+  description: 'OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like "SportsAPING/v1.0/listMarketCatalogue").
+
+    Authentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.
+
+    Endpoints modeled here are grounded in Betfair''s published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.'
+  version: 1.0.0
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Betfair Developer Program Terms
+    url: https://developer.betfair.com/
+servers:
+- url: https://api.betfair.com/exchange
+  description: Betfair Exchange API-NG (Betting, Accounts, Heartbeat)
+security:
+- appKey: []
+  sessionToken: []
+tags:
+- name: Identity
+  description: Session login, keep-alive, and logout via Betfair identity SSO.
+paths:
+  /login:
+    post:
+      operationId: login
+      tags:
+      - Identity
+      summary: Interactive login (obtain a session token)
+      description: 'Interactive login against Betfair identity SSO. Send username and password as application/x-www-form-urlencoded together with the X-Application (app key) header; the response returns a session token used as X-Authentication on all exchange calls. Full URL: https://identitysso.betfair.com/api/login . A certificate-based non-interactive login is available at https://identitysso-cert.betfair.com/api/certlogin.'
+      servers:
+      - url: https://identitysso.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - username
+              - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login result with session token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+  /keepAlive:
+    post:
+      operationId: keepAlive
+      tags:
+      - Identity
+      summary: Extend the session token
+      description: 'Refreshes the session token''s inactivity timeout. Send the current session token as the X-Authentication header. Full URL: https://identitysso.betfair.com/api/keepAlive.'
+      servers:
+      - url: https://identitysso.betfair.com/api
+      responses:
+        '200':
+          description: Keep-alive result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoStatusResponse'
+  /logout:
+    post:
+      operationId: logout
+      tags:
+      - Identity
+      summary: Invalidate the session token
+      description: 'Logs out and invalidates the session token. Full URL: https://identitysso.betfair.com/api/logout.'
+      servers:
+      - url: https://identitysso.betfair.com/api
+      responses:
+        '200':
+          description: Logout result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoStatusResponse'
+components:
+  schemas:
+    LoginResponse:
+      type: object
+      description: Interactive login response from identity SSO.
+      properties:
+        token:
+          type: string
+          description: The session token (use as X-Authentication).
+        product:
+          type: string
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAIL
+          - LIMITED_ACCESS
+        error:
+          type: string
+    SsoStatusResponse:
+      type: object
+      description: Keep-alive / logout status.
+      properties:
+        token:
+          type: string
+        product:
+          type: string
+        status:
+          type: string
+        error:
+          type: string
+  securitySchemes:
+    appKey:
+      type: apiKey
+      in: header
+      name: X-Application
+      description: The developer Application Key (delayed or live).
+    sessionToken:
+      type: apiKey
+      in: header
+      name: X-Authentication
+      description: The session token (ssoid) obtained from identity SSO login.

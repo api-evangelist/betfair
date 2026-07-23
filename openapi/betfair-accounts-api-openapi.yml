@@ -1,0 +1,243 @@
+openapi: 3.0.3
+info:
+  title: Betfair Exchange API (API-NG) Accounts API
+  description: 'OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like "SportsAPING/v1.0/listMarketCatalogue").
+
+    Authentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.
+
+    Endpoints modeled here are grounded in Betfair''s published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.'
+  version: 1.0.0
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Betfair Developer Program Terms
+    url: https://developer.betfair.com/
+servers:
+- url: https://api.betfair.com/exchange
+  description: Betfair Exchange API-NG (Betting, Accounts, Heartbeat)
+security:
+- appKey: []
+  sessionToken: []
+tags:
+- name: Accounts
+  description: AccountAPING - account funds, details, statement, and app keys.
+paths:
+  /account/rest/v1.0/getAccountFunds/:
+    post:
+      operationId: getAccountFunds
+      tags:
+      - Accounts
+      summary: Get account funds
+      description: Returns the available-to-bet amount, exposure, and balance for the account wallet.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                wallet:
+                  type: string
+                  enum:
+                  - UK
+                  - AUSTRALIAN
+      responses:
+        '200':
+          description: Account funds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountFundsResponse'
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/getAccountDetails/:
+    post:
+      operationId: getAccountDetails
+      tags:
+      - Accounts
+      summary: Get account details
+      description: Returns the account's details - name, currency, locale, region, timezone, and discount rate.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Account details.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/getAccountStatement/:
+    post:
+      operationId: getAccountStatement
+      tags:
+      - Accounts
+      summary: Get account statement
+      description: Returns the account statement - a ledger of financial transactions on the account.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                locale:
+                  type: string
+                fromRecord:
+                  type: integer
+                recordCount:
+                  type: integer
+                itemDateRange:
+                  $ref: '#/components/schemas/TimeRange'
+                includeItem:
+                  type: string
+                  enum:
+                  - ALL
+                  - DEPOSITS_WITHDRAWALS
+                  - EXCHANGE
+                  - POKER_ROOM
+      responses:
+        '200':
+          description: Account statement.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/listCurrencyRates/:
+    post:
+      operationId: listCurrencyRates
+      tags:
+      - Accounts
+      summary: List currency rates
+      description: Returns a list of currency rates based on a given base currency.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fromCurrency:
+                  type: string
+      responses:
+        '200':
+          description: Currency rates.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/getDeveloperAppKeys/:
+    post:
+      operationId: getDeveloperAppKeys
+      tags:
+      - Accounts
+      summary: Get developer app keys
+      description: Returns the application keys owned by the developer/vendor calling the operation.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Developer application keys.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+components:
+  schemas:
+    TimeRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+    ApiError:
+      type: object
+      description: Betfair APINGException / AccountAPINGException envelope. In JSON-RPC the error is returned under the JSON-RPC "error" member; in REST it is the HTTP 400 body.
+      properties:
+        faultcode:
+          type: string
+        faultstring:
+          type: string
+        detail:
+          type: object
+          properties:
+            APINGException:
+              type: object
+              properties:
+                errorCode:
+                  type: string
+                  enum:
+                  - TOO_MUCH_DATA
+                  - INVALID_INPUT_DATA
+                  - INVALID_SESSION_INFORMATION
+                  - NO_APP_KEY
+                  - NO_SESSION
+                  - INVALID_APP_KEY
+                  - TOO_MANY_REQUESTS
+                  - SERVICE_BUSY
+                  - TIMEOUT_ERROR
+                  - INVALID_JSON
+                  - ACCESS_DENIED
+                errorDetails:
+                  type: string
+                requestUUID:
+                  type: string
+    AccountFundsResponse:
+      type: object
+      properties:
+        availableToBetBalance:
+          type: number
+        exposure:
+          type: number
+        retainedCommission:
+          type: number
+        exposureLimit:
+          type: number
+        discountRate:
+          type: number
+        pointsBalance:
+          type: integer
+        wallet:
+          type: string
+  responses:
+    AccountError:
+      description: Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    appKey:
+      type: apiKey
+      in: header
+      name: X-Application
+      description: The developer Application Key (delayed or live).
+    sessionToken:
+      type: apiKey
+      in: header
+      name: X-Authentication
+      description: The session token (ssoid) obtained from identity SSO login.

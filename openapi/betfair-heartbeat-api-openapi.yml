@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: Betfair Exchange API (API-NG) Accounts Heartbeat API
+  description: 'OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like "SportsAPING/v1.0/listMarketCatalogue").
+
+    Authentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.
+
+    Endpoints modeled here are grounded in Betfair''s published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.'
+  version: 1.0.0
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Betfair Developer Program Terms
+    url: https://developer.betfair.com/
+servers:
+- url: https://api.betfair.com/exchange
+  description: Betfair Exchange API-NG (Betting, Accounts, Heartbeat)
+security:
+- appKey: []
+  sessionToken: []
+tags:
+- name: Heartbeat
+  description: HeartbeatAPING - dead man's switch that cancels unmatched bets.
+paths:
+  /heartbeat/rest/v1.0/heartbeat/:
+    post:
+      operationId: heartbeat
+      tags:
+      - Heartbeat
+      summary: Heartbeat (dead man's switch)
+      description: Registers a heartbeat with a preferred timeout (seconds). If Betfair does not receive a subsequent heartbeat within the timeout it will cancel the customer's unmatched bets. Preferred timeout is clamped between 10 and 300 seconds; a value of 0 disables the switch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - preferredTimeoutSeconds
+              properties:
+                preferredTimeoutSeconds:
+                  type: integer
+                  minimum: 0
+                  maximum: 300
+      responses:
+        '200':
+          description: Heartbeat report.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actionPerformed:
+                    type: string
+                    enum:
+                    - NONE
+                    - CANCELLATION_REQUEST_SUBMITTED
+                    - ALL_BETS_CANCELLED
+                    - SOME_BETS_NOT_CANCELLED
+                    - BETS_CANCELLATION_FAILED
+                  actualTimeoutSeconds:
+                    type: integer
+        default:
+          $ref: '#/components/responses/BettingError'
+components:
+  schemas:
+    ApiError:
+      type: object
+      description: Betfair APINGException / AccountAPINGException envelope. In JSON-RPC the error is returned under the JSON-RPC "error" member; in REST it is the HTTP 400 body.
+      properties:
+        faultcode:
+          type: string
+        faultstring:
+          type: string
+        detail:
+          type: object
+          properties:
+            APINGException:
+              type: object
+              properties:
+                errorCode:
+                  type: string
+                  enum:
+                  - TOO_MUCH_DATA
+                  - INVALID_INPUT_DATA
+                  - INVALID_SESSION_INFORMATION
+                  - NO_APP_KEY
+                  - NO_SESSION
+                  - INVALID_APP_KEY
+                  - TOO_MANY_REQUESTS
+                  - SERVICE_BUSY
+                  - TIMEOUT_ERROR
+                  - INVALID_JSON
+                  - ACCESS_DENIED
+                errorDetails:
+                  type: string
+                requestUUID:
+                  type: string
+  responses:
+    BettingError:
+      description: Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    appKey:
+      type: apiKey
+      in: header
+      name: X-Application
+      description: The developer Application Key (delayed or live).
+    sessionToken:
+      type: apiKey
+      in: header
+      name: X-Authentication
+      description: The session token (ssoid) obtained from identity SSO login.

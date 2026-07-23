@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: Betfair Exchange API (API-NG) Accounts Historic Data API
+  description: 'OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like "SportsAPING/v1.0/listMarketCatalogue").
+
+    Authentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.
+
+    Endpoints modeled here are grounded in Betfair''s published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.'
+  version: 1.0.0
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Betfair Developer Program Terms
+    url: https://developer.betfair.com/
+servers:
+- url: https://api.betfair.com/exchange
+  description: Betfair Exchange API-NG (Betting, Accounts, Heartbeat)
+security:
+- appKey: []
+  sessionToken: []
+tags:
+- name: Historic Data
+  description: Download purchased historical exchange market data.
+paths:
+  /GetMyData:
+    post:
+      operationId: getMyData
+      tags:
+      - Historic Data
+      summary: Get purchased data packages
+      description: 'Returns the historical data packages the customer has purchased. Full URL: https://historicdata.betfair.com/api/GetMyData. Authenticated with the ssoid session token header.'
+      servers:
+      - url: https://historicdata.betfair.com/api
+      responses:
+        '200':
+          description: List of purchased data packages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /GetCollectionOptions:
+    post:
+      operationId: getCollectionOptions
+      tags:
+      - Historic Data
+      summary: Get collection filter options
+      description: Returns the available filter options (sports, dates, market types) for a data collection.
+      servers:
+      - url: https://historicdata.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricDataFilter'
+      responses:
+        '200':
+          description: Collection options.
+          content:
+            application/json:
+              schema:
+                type: object
+  /GetAdvBasketDataSize:
+    post:
+      operationId: getAdvBasketDataSize
+      tags:
+      - Historic Data
+      summary: Get file count and size for a filter
+      description: Returns the number of files and total size that match a given filter.
+      servers:
+      - url: https://historicdata.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricDataFilter'
+      responses:
+        '200':
+          description: File count and size.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileCount:
+                    type: integer
+                  totalSizeMB:
+                    type: number
+  /DownloadListOfFiles:
+    post:
+      operationId: downloadListOfFiles
+      tags:
+      - Historic Data
+      summary: List downloadable files for a filter
+      description: Returns a list of file paths matching a given filter, to be fetched via DownloadFile.
+      servers:
+      - url: https://historicdata.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricDataFilter'
+      responses:
+        '200':
+          description: List of file paths.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /DownloadFile:
+    get:
+      operationId: downloadFile
+      tags:
+      - Historic Data
+      summary: Download a historical data file
+      description: Downloads a specific historical data file by path. Full URL, query-parameterized, under https://historicdata.betfair.com/api/DownloadFile.
+      servers:
+      - url: https://historicdata.betfair.com/api
+      parameters:
+      - name: filePath
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The file contents (compressed market data).
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+components:
+  schemas:
+    HistoricDataFilter:
+      type: object
+      description: Filter for the Historic Data API (sport, plan, date range, market types).
+      properties:
+        sport:
+          type: string
+        plan:
+          type: string
+          enum:
+          - Basic Plan
+          - Advanced Plan
+          - Pro Plan
+        fromDay:
+          type: integer
+        fromMonth:
+          type: integer
+        fromYear:
+          type: integer
+        toDay:
+          type: integer
+        toMonth:
+          type: integer
+        toYear:
+          type: integer
+        marketTypesCollection:
+          type: array
+          items:
+            type: string
+        countriesCollection:
+          type: array
+          items:
+            type: string
+        fileTypeCollection:
+          type: array
+          items:
+            type: string
+  securitySchemes:
+    appKey:
+      type: apiKey
+      in: header
+      name: X-Application
+      description: The developer Application Key (delayed or live).
+    sessionToken:
+      type: apiKey
+      in: header
+      name: X-Authentication
+      description: The session token (ssoid) obtained from identity SSO login.
