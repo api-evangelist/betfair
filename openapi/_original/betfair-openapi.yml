@@ -1,0 +1,1209 @@
+openapi: 3.0.3
+info:
+  title: Betfair Exchange API (API-NG)
+  description: >-
+    OpenAPI description of the request/response HTTP surface of the Betfair
+    Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC
+    and REST operations over HTTPS. This document models the per-operation REST
+    surface (each operation is an HTTP POST whose JSON body carries the
+    operation parameters) for the Betting API (SportsAPING), the Accounts API
+    (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair
+    identity SSO login endpoints and the Historic Data API. The same operations
+    are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1
+    endpoints (method names like "SportsAPING/v1.0/listMarketCatalogue").
+
+    Authentication uses two headers on every exchange call:
+    X-Application (your Application Key) and X-Authentication (a session token /
+    ssoid obtained from the identity SSO login). The real-time Exchange Stream
+    API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT
+    WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.
+
+    Endpoints modeled here are grounded in Betfair's published API reference;
+    request/response schemas are simplified to the primary fields and marked as
+    representative where full field sets are large.
+  version: 1.0.0
+  contact:
+    name: API Evangelist
+    email: kin@apievangelist.com
+    url: https://apievangelist.com
+  license:
+    name: API documentation - Betfair Developer Program Terms
+    url: https://developer.betfair.com/
+servers:
+  - url: https://api.betfair.com/exchange
+    description: Betfair Exchange API-NG (Betting, Accounts, Heartbeat)
+security:
+  - appKey: []
+    sessionToken: []
+tags:
+  - name: Identity
+    description: Session login, keep-alive, and logout via Betfair identity SSO.
+  - name: Betting
+    description: SportsAPING - market navigation, prices, and bet placement.
+  - name: Accounts
+    description: AccountAPING - account funds, details, statement, and app keys.
+  - name: Heartbeat
+    description: HeartbeatAPING - dead man's switch that cancels unmatched bets.
+  - name: Historic Data
+    description: Download purchased historical exchange market data.
+paths:
+  # ---------------- Identity SSO ----------------
+  /login:
+    post:
+      operationId: login
+      tags: [Identity]
+      summary: Interactive login (obtain a session token)
+      description: >-
+        Interactive login against Betfair identity SSO. Send username and
+        password as application/x-www-form-urlencoded together with the
+        X-Application (app key) header; the response returns a session token
+        used as X-Authentication on all exchange calls. Full URL:
+        https://identitysso.betfair.com/api/login . A certificate-based
+        non-interactive login is available at
+        https://identitysso-cert.betfair.com/api/certlogin.
+      servers:
+        - url: https://identitysso.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login result with session token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+  /keepAlive:
+    post:
+      operationId: keepAlive
+      tags: [Identity]
+      summary: Extend the session token
+      description: >-
+        Refreshes the session token's inactivity timeout. Send the current
+        session token as the X-Authentication header. Full URL:
+        https://identitysso.betfair.com/api/keepAlive.
+      servers:
+        - url: https://identitysso.betfair.com/api
+      responses:
+        '200':
+          description: Keep-alive result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoStatusResponse'
+  /logout:
+    post:
+      operationId: logout
+      tags: [Identity]
+      summary: Invalidate the session token
+      description: >-
+        Logs out and invalidates the session token. Full URL:
+        https://identitysso.betfair.com/api/logout.
+      servers:
+        - url: https://identitysso.betfair.com/api
+      responses:
+        '200':
+          description: Logout result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SsoStatusResponse'
+
+  # ---------------- Betting API (SportsAPING) ----------------
+  /betting/rest/v1.0/listEventTypes/:
+    post:
+      operationId: listEventTypes
+      tags: [Betting]
+      summary: List event types (sports)
+      description: Returns a list of event types (e.g. Soccer, Horse Racing) matching the market filter.
+      requestBody:
+        $ref: '#/components/requestBodies/MarketFilterBody'
+      responses:
+        '200':
+          description: Event type results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventTypeResult'
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listCompetitions/:
+    post:
+      operationId: listCompetitions
+      tags: [Betting]
+      summary: List competitions
+      description: Returns competitions (e.g. leagues) associated with markets matching the filter.
+      requestBody:
+        $ref: '#/components/requestBodies/MarketFilterBody'
+      responses:
+        '200':
+          description: Competition results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listEvents/:
+    post:
+      operationId: listEvents
+      tags: [Betting]
+      summary: List events
+      description: Returns a list of events matching the market filter.
+      requestBody:
+        $ref: '#/components/requestBodies/MarketFilterBody'
+      responses:
+        '200':
+          description: Event results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listMarketTypes/:
+    post:
+      operationId: listMarketTypes
+      tags: [Betting]
+      summary: List market types
+      description: Returns market types (e.g. MATCH_ODDS, OVER_UNDER_25) matching the filter.
+      requestBody:
+        $ref: '#/components/requestBodies/MarketFilterBody'
+      responses:
+        '200':
+          description: Market type results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listMarketCatalogue/:
+    post:
+      operationId: listMarketCatalogue
+      tags: [Betting]
+      summary: List market catalogue
+      description: >-
+        Returns a list of information about published (ACTIVE/SUSPENDED)
+        markets that does not change (or changes very rarely). Use this to
+        discover markets, their runners, and metadata; the returned marketId
+        and runner selectionId are required to place bets.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [filter, maxResults]
+              properties:
+                filter:
+                  $ref: '#/components/schemas/MarketFilter'
+                marketProjection:
+                  type: array
+                  items:
+                    type: string
+                    enum: [COMPETITION, EVENT, EVENT_TYPE, MARKET_START_TIME, MARKET_DESCRIPTION, RUNNER_DESCRIPTION, RUNNER_METADATA]
+                sort:
+                  type: string
+                  enum: [MINIMUM_TRADED, MAXIMUM_TRADED, MINIMUM_AVAILABLE, MAXIMUM_AVAILABLE, FIRST_TO_START, LAST_TO_START]
+                maxResults:
+                  type: integer
+                  maximum: 1000
+                locale:
+                  type: string
+      responses:
+        '200':
+          description: Market catalogue results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketCatalogue'
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listMarketBook/:
+    post:
+      operationId: listMarketBook
+      tags: [Betting]
+      summary: List market book (live prices)
+      description: >-
+        Returns dynamic data about markets - prices, status, and available to
+        back/lay depth - for a list of market IDs. Data request weighting
+        applies; a single request has a maximum weighting of 200.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [marketIds]
+              properties:
+                marketIds:
+                  type: array
+                  items:
+                    type: string
+                priceProjection:
+                  $ref: '#/components/schemas/PriceProjection'
+                orderProjection:
+                  type: string
+                  enum: [ALL, EXECUTABLE, EXECUTION_COMPLETE]
+                matchProjection:
+                  type: string
+                  enum: [NO_ROLLUP, ROLLED_UP_BY_PRICE, ROLLED_UP_BY_AVG_PRICE]
+                currencyCode:
+                  type: string
+      responses:
+        '200':
+          description: Market book results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketBook'
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listRunnerBook/:
+    post:
+      operationId: listRunnerBook
+      tags: [Betting]
+      summary: List runner book
+      description: Returns dynamic price/depth data for a single runner in a single market.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [marketId, selectionId]
+              properties:
+                marketId:
+                  type: string
+                selectionId:
+                  type: integer
+                  format: int64
+                handicap:
+                  type: number
+                priceProjection:
+                  $ref: '#/components/schemas/PriceProjection'
+      responses:
+        '200':
+          description: Runner book results.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketBook'
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listCurrentOrders/:
+    post:
+      operationId: listCurrentOrders
+      tags: [Betting]
+      summary: List current orders
+      description: Returns a list of the customer's current (unmatched and matched) orders.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                betIds:
+                  type: array
+                  items:
+                    type: string
+                marketIds:
+                  type: array
+                  items:
+                    type: string
+                orderProjection:
+                  type: string
+                  enum: [ALL, EXECUTABLE, EXECUTION_COMPLETE]
+                fromRecord:
+                  type: integer
+                recordCount:
+                  type: integer
+      responses:
+        '200':
+          description: Current orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentOrderSummaryReport'
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/listClearedOrders/:
+    post:
+      operationId: listClearedOrders
+      tags: [Betting]
+      summary: List cleared (settled) orders
+      description: Returns a list of settled bets based on the bet status, ordered by settled date.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [betStatus]
+              properties:
+                betStatus:
+                  type: string
+                  enum: [SETTLED, VOIDED, LAPSED, CANCELLED]
+                eventTypeIds:
+                  type: array
+                  items:
+                    type: string
+                marketIds:
+                  type: array
+                  items:
+                    type: string
+                settledDateRange:
+                  $ref: '#/components/schemas/TimeRange'
+                fromRecord:
+                  type: integer
+                recordCount:
+                  type: integer
+      responses:
+        '200':
+          description: Cleared orders.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/placeOrders/:
+    post:
+      operationId: placeOrders
+      tags: [Betting]
+      summary: Place orders (bets)
+      description: >-
+        Places one or more orders on a market. On success a betId is returned
+        per instruction. Supports LIMIT, LIMIT_ON_CLOSE, and MARKET_ON_CLOSE
+        order types. Provide a customerRef for idempotency.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [marketId, instructions]
+              properties:
+                marketId:
+                  type: string
+                instructions:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/PlaceInstruction'
+                customerRef:
+                  type: string
+                customerStrategyRef:
+                  type: string
+      responses:
+        '200':
+          description: Place execution report.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceExecutionReport'
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/cancelOrders/:
+    post:
+      operationId: cancelOrders
+      tags: [Betting]
+      summary: Cancel orders
+      description: Cancels all bets, all bets on a market, or specific bets on a market (fully or partially).
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                marketId:
+                  type: string
+                instructions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      betId:
+                        type: string
+                      sizeReduction:
+                        type: number
+                customerRef:
+                  type: string
+      responses:
+        '200':
+          description: Cancel execution report.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/replaceOrders/:
+    post:
+      operationId: replaceOrders
+      tags: [Betting]
+      summary: Replace orders
+      description: Cancels and re-places existing unmatched bets at a new price in a single atomic operation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [marketId, instructions]
+              properties:
+                marketId:
+                  type: string
+                instructions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      betId:
+                        type: string
+                      newPrice:
+                        type: number
+                customerRef:
+                  type: string
+      responses:
+        '200':
+          description: Replace execution report.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+  /betting/rest/v1.0/updateOrders/:
+    post:
+      operationId: updateOrders
+      tags: [Betting]
+      summary: Update orders
+      description: Updates non-exposure-changing fields on current orders (e.g. persistence type).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [marketId, instructions]
+              properties:
+                marketId:
+                  type: string
+                instructions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      betId:
+                        type: string
+                      newPersistenceType:
+                        type: string
+                        enum: [LAPSE, PERSIST, MARKET_ON_CLOSE]
+                customerRef:
+                  type: string
+      responses:
+        '200':
+          description: Update execution report.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/BettingError'
+
+  # ---------------- Accounts API (AccountAPING) ----------------
+  /account/rest/v1.0/getAccountFunds/:
+    post:
+      operationId: getAccountFunds
+      tags: [Accounts]
+      summary: Get account funds
+      description: Returns the available-to-bet amount, exposure, and balance for the account wallet.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                wallet:
+                  type: string
+                  enum: [UK, AUSTRALIAN]
+      responses:
+        '200':
+          description: Account funds.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountFundsResponse'
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/getAccountDetails/:
+    post:
+      operationId: getAccountDetails
+      tags: [Accounts]
+      summary: Get account details
+      description: Returns the account's details - name, currency, locale, region, timezone, and discount rate.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Account details.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/getAccountStatement/:
+    post:
+      operationId: getAccountStatement
+      tags: [Accounts]
+      summary: Get account statement
+      description: Returns the account statement - a ledger of financial transactions on the account.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                locale:
+                  type: string
+                fromRecord:
+                  type: integer
+                recordCount:
+                  type: integer
+                itemDateRange:
+                  $ref: '#/components/schemas/TimeRange'
+                includeItem:
+                  type: string
+                  enum: [ALL, DEPOSITS_WITHDRAWALS, EXCHANGE, POKER_ROOM]
+      responses:
+        '200':
+          description: Account statement.
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/listCurrencyRates/:
+    post:
+      operationId: listCurrencyRates
+      tags: [Accounts]
+      summary: List currency rates
+      description: Returns a list of currency rates based on a given base currency.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fromCurrency:
+                  type: string
+      responses:
+        '200':
+          description: Currency rates.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+  /account/rest/v1.0/getDeveloperAppKeys/:
+    post:
+      operationId: getDeveloperAppKeys
+      tags: [Accounts]
+      summary: Get developer app keys
+      description: Returns the application keys owned by the developer/vendor calling the operation.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Developer application keys.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        default:
+          $ref: '#/components/responses/AccountError'
+
+  # ---------------- Heartbeat API (HeartbeatAPING) ----------------
+  /heartbeat/rest/v1.0/heartbeat/:
+    post:
+      operationId: heartbeat
+      tags: [Heartbeat]
+      summary: Heartbeat (dead man's switch)
+      description: >-
+        Registers a heartbeat with a preferred timeout (seconds). If Betfair
+        does not receive a subsequent heartbeat within the timeout it will
+        cancel the customer's unmatched bets. Preferred timeout is clamped
+        between 10 and 300 seconds; a value of 0 disables the switch.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [preferredTimeoutSeconds]
+              properties:
+                preferredTimeoutSeconds:
+                  type: integer
+                  minimum: 0
+                  maximum: 300
+      responses:
+        '200':
+          description: Heartbeat report.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actionPerformed:
+                    type: string
+                    enum: [NONE, CANCELLATION_REQUEST_SUBMITTED, ALL_BETS_CANCELLED, SOME_BETS_NOT_CANCELLED, BETS_CANCELLATION_FAILED]
+                  actualTimeoutSeconds:
+                    type: integer
+        default:
+          $ref: '#/components/responses/BettingError'
+
+  # ---------------- Historic Data API ----------------
+  /GetMyData:
+    post:
+      operationId: getMyData
+      tags: [Historic Data]
+      summary: Get purchased data packages
+      description: >-
+        Returns the historical data packages the customer has purchased. Full
+        URL: https://historicdata.betfair.com/api/GetMyData. Authenticated with
+        the ssoid session token header.
+      servers:
+        - url: https://historicdata.betfair.com/api
+      responses:
+        '200':
+          description: List of purchased data packages.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /GetCollectionOptions:
+    post:
+      operationId: getCollectionOptions
+      tags: [Historic Data]
+      summary: Get collection filter options
+      description: Returns the available filter options (sports, dates, market types) for a data collection.
+      servers:
+        - url: https://historicdata.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricDataFilter'
+      responses:
+        '200':
+          description: Collection options.
+          content:
+            application/json:
+              schema:
+                type: object
+  /GetAdvBasketDataSize:
+    post:
+      operationId: getAdvBasketDataSize
+      tags: [Historic Data]
+      summary: Get file count and size for a filter
+      description: Returns the number of files and total size that match a given filter.
+      servers:
+        - url: https://historicdata.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricDataFilter'
+      responses:
+        '200':
+          description: File count and size.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileCount:
+                    type: integer
+                  totalSizeMB:
+                    type: number
+  /DownloadListOfFiles:
+    post:
+      operationId: downloadListOfFiles
+      tags: [Historic Data]
+      summary: List downloadable files for a filter
+      description: Returns a list of file paths matching a given filter, to be fetched via DownloadFile.
+      servers:
+        - url: https://historicdata.betfair.com/api
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistoricDataFilter'
+      responses:
+        '200':
+          description: List of file paths.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /DownloadFile:
+    get:
+      operationId: downloadFile
+      tags: [Historic Data]
+      summary: Download a historical data file
+      description: Downloads a specific historical data file by path. Full URL, query-parameterized, under https://historicdata.betfair.com/api/DownloadFile.
+      servers:
+        - url: https://historicdata.betfair.com/api
+      parameters:
+        - name: filePath
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The file contents (compressed market data).
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+components:
+  securitySchemes:
+    appKey:
+      type: apiKey
+      in: header
+      name: X-Application
+      description: The developer Application Key (delayed or live).
+    sessionToken:
+      type: apiKey
+      in: header
+      name: X-Authentication
+      description: The session token (ssoid) obtained from identity SSO login.
+  requestBodies:
+    MarketFilterBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [filter]
+            properties:
+              filter:
+                $ref: '#/components/schemas/MarketFilter'
+              locale:
+                type: string
+  responses:
+    BettingError:
+      description: >-
+        Betting API error. REST returns HTTP 400 with an APINGException whose
+        errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION,
+        INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+    AccountError:
+      description: >-
+        Accounts API error. Returns an AccountAPINGException with an errorCode
+        such as INVALID_SESSION_INFORMATION or NO_APP_KEY.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  schemas:
+    LoginResponse:
+      type: object
+      description: Interactive login response from identity SSO.
+      properties:
+        token:
+          type: string
+          description: The session token (use as X-Authentication).
+        product:
+          type: string
+        status:
+          type: string
+          enum: [SUCCESS, FAIL, LIMITED_ACCESS]
+        error:
+          type: string
+    SsoStatusResponse:
+      type: object
+      description: Keep-alive / logout status.
+      properties:
+        token:
+          type: string
+        product:
+          type: string
+        status:
+          type: string
+        error:
+          type: string
+    MarketFilter:
+      type: object
+      description: Filter selecting a subset of markets. All fields optional.
+      properties:
+        textQuery:
+          type: string
+        eventTypeIds:
+          type: array
+          items:
+            type: string
+        eventIds:
+          type: array
+          items:
+            type: string
+        competitionIds:
+          type: array
+          items:
+            type: string
+        marketIds:
+          type: array
+          items:
+            type: string
+        marketCountries:
+          type: array
+          items:
+            type: string
+        marketTypeCodes:
+          type: array
+          items:
+            type: string
+        marketStartTime:
+          $ref: '#/components/schemas/TimeRange'
+        inPlayOnly:
+          type: boolean
+        turnInPlayEnabled:
+          type: boolean
+    TimeRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+    EventTypeResult:
+      type: object
+      properties:
+        eventType:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        marketCount:
+          type: integer
+    PriceProjection:
+      type: object
+      properties:
+        priceData:
+          type: array
+          items:
+            type: string
+            enum: [SP_AVAILABLE, SP_TRADED, EX_BEST_OFFERS, EX_ALL_OFFERS, EX_TRADED]
+        virtualise:
+          type: boolean
+        rolloverStakes:
+          type: boolean
+    MarketCatalogue:
+      type: object
+      properties:
+        marketId:
+          type: string
+        marketName:
+          type: string
+        totalMatched:
+          type: number
+        runners:
+          type: array
+          items:
+            type: object
+            properties:
+              selectionId:
+                type: integer
+                format: int64
+              runnerName:
+                type: string
+              handicap:
+                type: number
+              sortPriority:
+                type: integer
+    MarketBook:
+      type: object
+      properties:
+        marketId:
+          type: string
+        isMarketDataDelayed:
+          type: boolean
+        status:
+          type: string
+          enum: [INACTIVE, OPEN, SUSPENDED, CLOSED]
+        inplay:
+          type: boolean
+        totalMatched:
+          type: number
+        runners:
+          type: array
+          items:
+            $ref: '#/components/schemas/Runner'
+    Runner:
+      type: object
+      properties:
+        selectionId:
+          type: integer
+          format: int64
+        handicap:
+          type: number
+        status:
+          type: string
+          enum: [ACTIVE, WINNER, LOSER, REMOVED, REMOVED_VACANT, HIDDEN]
+        lastPriceTraded:
+          type: number
+        totalMatched:
+          type: number
+        ex:
+          type: object
+          properties:
+            availableToBack:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+            availableToLay:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+            tradedVolume:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+    PriceSize:
+      type: object
+      properties:
+        price:
+          type: number
+        size:
+          type: number
+    PlaceInstruction:
+      type: object
+      required: [selectionId, side, orderType]
+      properties:
+        orderType:
+          type: string
+          enum: [LIMIT, LIMIT_ON_CLOSE, MARKET_ON_CLOSE]
+        selectionId:
+          type: integer
+          format: int64
+        handicap:
+          type: number
+        side:
+          type: string
+          enum: [BACK, LAY]
+        limitOrder:
+          type: object
+          properties:
+            size:
+              type: number
+            price:
+              type: number
+            persistenceType:
+              type: string
+              enum: [LAPSE, PERSIST, MARKET_ON_CLOSE]
+    PlaceExecutionReport:
+      type: object
+      properties:
+        customerRef:
+          type: string
+        status:
+          type: string
+          enum: [SUCCESS, FAILURE, TIMEOUT]
+        errorCode:
+          type: string
+        marketId:
+          type: string
+        instructionReports:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+                enum: [SUCCESS, FAILURE, TIMEOUT]
+              betId:
+                type: string
+              placedDate:
+                type: string
+                format: date-time
+              averagePriceMatched:
+                type: number
+              sizeMatched:
+                type: number
+              orderStatus:
+                type: string
+                enum: [PENDING, EXECUTION_COMPLETE, EXECUTABLE, EXPIRED]
+    CurrentOrderSummaryReport:
+      type: object
+      properties:
+        currentOrders:
+          type: array
+          items:
+            type: object
+            properties:
+              betId:
+                type: string
+              marketId:
+                type: string
+              selectionId:
+                type: integer
+                format: int64
+              side:
+                type: string
+                enum: [BACK, LAY]
+              status:
+                type: string
+                enum: [EXECUTION_COMPLETE, EXECUTABLE]
+              priceSize:
+                $ref: '#/components/schemas/PriceSize'
+              sizeMatched:
+                type: number
+              sizeRemaining:
+                type: number
+        moreAvailable:
+          type: boolean
+    AccountFundsResponse:
+      type: object
+      properties:
+        availableToBetBalance:
+          type: number
+        exposure:
+          type: number
+        retainedCommission:
+          type: number
+        exposureLimit:
+          type: number
+        discountRate:
+          type: number
+        pointsBalance:
+          type: integer
+        wallet:
+          type: string
+    HistoricDataFilter:
+      type: object
+      description: Filter for the Historic Data API (sport, plan, date range, market types).
+      properties:
+        sport:
+          type: string
+        plan:
+          type: string
+          enum: [Basic Plan, Advanced Plan, Pro Plan]
+        fromDay:
+          type: integer
+        fromMonth:
+          type: integer
+        fromYear:
+          type: integer
+        toDay:
+          type: integer
+        toMonth:
+          type: integer
+        toYear:
+          type: integer
+        marketTypesCollection:
+          type: array
+          items:
+            type: string
+        countriesCollection:
+          type: array
+          items:
+            type: string
+        fileTypeCollection:
+          type: array
+          items:
+            type: string
+    ApiError:
+      type: object
+      description: >-
+        Betfair APINGException / AccountAPINGException envelope. In JSON-RPC the
+        error is returned under the JSON-RPC "error" member; in REST it is the
+        HTTP 400 body.
+      properties:
+        faultcode:
+          type: string
+        faultstring:
+          type: string
+        detail:
+          type: object
+          properties:
+            APINGException:
+              type: object
+              properties:
+                errorCode:
+                  type: string
+                  enum:
+                    - TOO_MUCH_DATA
+                    - INVALID_INPUT_DATA
+                    - INVALID_SESSION_INFORMATION
+                    - NO_APP_KEY
+                    - NO_SESSION
+                    - INVALID_APP_KEY
+                    - TOO_MANY_REQUESTS
+                    - SERVICE_BUSY
+                    - TIMEOUT_ERROR
+                    - INVALID_JSON
+                    - ACCESS_DENIED
+                errorDetails:
+                  type: string
+                requestUUID:
+                  type: string

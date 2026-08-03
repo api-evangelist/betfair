@@ -1,0 +1,22 @@
+{
+  "provider": "betfair",
+  "sources": [
+    "betfair-accounts-api-openapi.yml",
+    "betfair-betting-api-openapi.yml",
+    "betfair-heartbeat-api-openapi.yml",
+    "betfair-historic-data-api-openapi.yml",
+    "betfair-identity-api-openapi.yml"
+  ],
+  "outputs": [
+    "betfair-accounts-api-openapi.yml",
+    "betfair-betting-api-openapi.yml",
+    "betfair-heartbeat-api-openapi.yml",
+    "betfair-historic-data-api-openapi.yml",
+    "betfair-identity-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
