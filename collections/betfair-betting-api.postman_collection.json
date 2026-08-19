@@ -1,0 +1,2091 @@
+{
+  "item": [
+    {
+      "id": "9f27aea6-0eea-45d6-b40e-630219401a8c",
+      "name": "Betting",
+      "description": {
+        "content": "SportsAPING - market navigation, prices, and bet placement.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "927f871f-446e-40ab-850f-49b13922a8cc",
+          "name": "List event types (sports)",
+          "request": {
+            "name": "List event types (sports)",
+            "description": {
+              "content": "Returns a list of event types (e.g. Soccer, Horse Racing) matching the market filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listEventTypes",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"locale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f4161bb2-06b1-43e7-9549-036721d0c759",
+              "name": "Event type results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listEventTypes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"eventType\": {\n      \"id\": \"string\",\n      \"name\": \"string\"\n    },\n    \"marketCount\": 9182\n  },\n  {\n    \"eventType\": {\n      \"id\": \"string\",\n      \"name\": \"string\"\n    },\n    \"marketCount\": 8709\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c869fb4-8fe7-4b5f-9d59-5140317cf7d6",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listEventTypes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4c3b08cf-409d-4221-a236-de84712454aa",
+          "name": "List competitions",
+          "request": {
+            "name": "List competitions",
+            "description": {
+              "content": "Returns competitions (e.g. leagues) associated with markets matching the filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listCompetitions",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"locale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5b91406e-72e8-4e20-919c-5a1336146d13",
+              "name": "Competition results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listCompetitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4bb57e4a-aa95-4f2f-bcc5-2da130b2b272",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listCompetitions",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "400bc33c-dad6-499f-bada-742ec0b28552",
+          "name": "List events",
+          "request": {
+            "name": "List events",
+            "description": {
+              "content": "Returns a list of events matching the market filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listEvents",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"locale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "364317f3-4737-4c21-9385-f159ebee59e0",
+              "name": "Event results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listEvents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b9db222-42be-4483-9be2-30a0005248ca",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listEvents",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "09d6292d-62a1-4f78-8fd9-e32daaa6cb5c",
+          "name": "List market types",
+          "request": {
+            "name": "List market types",
+            "description": {
+              "content": "Returns market types (e.g. MATCH_ODDS, OVER_UNDER_25) matching the filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listMarketTypes",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"locale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b9cc5a25-b078-4b0e-b5b7-271121a3e785",
+              "name": "Market type results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listMarketTypes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c100e729-ef52-4344-85bb-31a80fa42c6d",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listMarketTypes",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b05d691-1647-4b56-ad5e-67e9ebc6a61f",
+          "name": "List market catalogue",
+          "request": {
+            "name": "List market catalogue",
+            "description": {
+              "content": "Returns a list of information about published (ACTIVE/SUSPENDED) markets that does not change (or changes very rarely). Use this to discover markets, their runners, and metadata; the returned marketId and runner selectionId are required to place bets.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listMarketCatalogue",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"maxResults\": \"<integer>\",\n  \"marketProjection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sort\": \"<string>\",\n  \"locale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a14fb9af-9951-4537-8915-2bedd71e28cc",
+              "name": "Market catalogue results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listMarketCatalogue",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"maxResults\": \"<integer>\",\n  \"marketProjection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sort\": \"<string>\",\n  \"locale\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"marketId\": \"string\",\n    \"marketName\": \"string\",\n    \"totalMatched\": 4645.480757752925,\n    \"runners\": [\n      {\n        \"selectionId\": 4884,\n        \"runnerName\": \"string\",\n        \"handicap\": 3150.8063596734537,\n        \"sortPriority\": 5567\n      },\n      {\n        \"selectionId\": 8760,\n        \"runnerName\": \"string\",\n        \"handicap\": 8333.66059956156,\n        \"sortPriority\": 1944\n      }\n    ]\n  },\n  {\n    \"marketId\": \"string\",\n    \"marketName\": \"string\",\n    \"totalMatched\": 6739.082324062683,\n    \"runners\": [\n      {\n        \"selectionId\": 952,\n        \"runnerName\": \"string\",\n        \"handicap\": 890.8065359472106,\n        \"sortPriority\": 2474\n      },\n      {\n        \"selectionId\": 16,\n        \"runnerName\": \"string\",\n        \"handicap\": 9382.151421487279,\n        \"sortPriority\": 7892\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed7788a5-0dae-4fe9-89cd-1b5ab8622178",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listMarketCatalogue",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filter\": {\n    \"textQuery\": \"<string>\",\n    \"eventTypeIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"eventIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"competitionIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketIds\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketCountries\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketTypeCodes\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"marketStartTime\": {\n      \"from\": \"<dateTime>\",\n      \"to\": \"<dateTime>\"\n    },\n    \"inPlayOnly\": \"<boolean>\",\n    \"turnInPlayEnabled\": \"<boolean>\"\n  },\n  \"maxResults\": \"<integer>\",\n  \"marketProjection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"sort\": \"<string>\",\n  \"locale\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbde3dea-50bd-43e4-b41e-204dc6dcb73c",
+          "name": "List market book (live prices)",
+          "request": {
+            "name": "List market book (live prices)",
+            "description": {
+              "content": "Returns dynamic data about markets - prices, status, and available to back/lay depth - for a list of market IDs. Data request weighting applies; a single request has a maximum weighting of 200.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listMarketBook",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"priceProjection\": {\n    \"priceData\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"virtualise\": \"<boolean>\",\n    \"rolloverStakes\": \"<boolean>\"\n  },\n  \"orderProjection\": \"<string>\",\n  \"matchProjection\": \"<string>\",\n  \"currencyCode\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e37e01be-3ccc-4cfc-873d-f99caf0fa2ec",
+              "name": "Market book results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listMarketBook",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"priceProjection\": {\n    \"priceData\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"virtualise\": \"<boolean>\",\n    \"rolloverStakes\": \"<boolean>\"\n  },\n  \"orderProjection\": \"<string>\",\n  \"matchProjection\": \"<string>\",\n  \"currencyCode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"marketId\": \"string\",\n    \"isMarketDataDelayed\": false,\n    \"status\": \"CLOSED\",\n    \"inplay\": true,\n    \"totalMatched\": 458.82601592167504,\n    \"runners\": [\n      {\n        \"selectionId\": 1348,\n        \"handicap\": 1371.5265541255305,\n        \"status\": \"ACTIVE\",\n        \"lastPriceTraded\": 5158.969406116341,\n        \"totalMatched\": 2315.4522675596,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"selectionId\": 4522,\n        \"handicap\": 8021.639166276295,\n        \"status\": \"ACTIVE\",\n        \"lastPriceTraded\": 8152.854632010941,\n        \"totalMatched\": 5494.5383476590105,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      }\n    ]\n  },\n  {\n    \"marketId\": \"string\",\n    \"isMarketDataDelayed\": false,\n    \"status\": \"CLOSED\",\n    \"inplay\": false,\n    \"totalMatched\": 4763.8842649505505,\n    \"runners\": [\n      {\n        \"selectionId\": 3738,\n        \"handicap\": 2037.4202141668575,\n        \"status\": \"LOSER\",\n        \"lastPriceTraded\": 2882.272070250619,\n        \"totalMatched\": 7811.613617804556,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"selectionId\": 8629,\n        \"handicap\": 4337.361509666612,\n        \"status\": \"REMOVED_VACANT\",\n        \"lastPriceTraded\": 1246.366951053721,\n        \"totalMatched\": 9021.216209080736,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ed84e6c-84a9-4da4-872f-422699a8c14d",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listMarketBook",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"priceProjection\": {\n    \"priceData\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"virtualise\": \"<boolean>\",\n    \"rolloverStakes\": \"<boolean>\"\n  },\n  \"orderProjection\": \"<string>\",\n  \"matchProjection\": \"<string>\",\n  \"currencyCode\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46b2e691-8556-4ae0-be3c-d665e0a65a9c",
+          "name": "List runner book",
+          "request": {
+            "name": "List runner book",
+            "description": {
+              "content": "Returns dynamic price/depth data for a single runner in a single market.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listRunnerBook",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketId\": \"<string>\",\n  \"selectionId\": \"<long>\",\n  \"handicap\": \"<number>\",\n  \"priceProjection\": {\n    \"priceData\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"virtualise\": \"<boolean>\",\n    \"rolloverStakes\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f1900dfd-10f4-4e4f-bd31-1bec749ebb39",
+              "name": "Runner book results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listRunnerBook",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"selectionId\": \"<long>\",\n  \"handicap\": \"<number>\",\n  \"priceProjection\": {\n    \"priceData\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"virtualise\": \"<boolean>\",\n    \"rolloverStakes\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"marketId\": \"string\",\n    \"isMarketDataDelayed\": true,\n    \"status\": \"OPEN\",\n    \"inplay\": false,\n    \"totalMatched\": 3129.3345940614613,\n    \"runners\": [\n      {\n        \"selectionId\": 87,\n        \"handicap\": 114.52204334739702,\n        \"status\": \"WINNER\",\n        \"lastPriceTraded\": 9660.401398194354,\n        \"totalMatched\": 1072.8216055525907,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"selectionId\": 9532,\n        \"handicap\": 9505.67898795071,\n        \"status\": \"WINNER\",\n        \"lastPriceTraded\": 2646.4298950373,\n        \"totalMatched\": 6442.624129070351,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      }\n    ]\n  },\n  {\n    \"marketId\": \"string\",\n    \"isMarketDataDelayed\": true,\n    \"status\": \"SUSPENDED\",\n    \"inplay\": true,\n    \"totalMatched\": 6939.514418450959,\n    \"runners\": [\n      {\n        \"selectionId\": 1174,\n        \"handicap\": 7870.7267606745845,\n        \"status\": \"LOSER\",\n        \"lastPriceTraded\": 8887.62616876563,\n        \"totalMatched\": 5411.317756517387,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"selectionId\": 2461,\n        \"handicap\": 3817.3651267503105,\n        \"status\": \"REMOVED_VACANT\",\n        \"lastPriceTraded\": 8100.992526415095,\n        \"totalMatched\": 8521.967060504716,\n        \"ex\": {\n          \"availableToBack\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"availableToLay\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"tradedVolume\": [\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"price\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"size\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f13803eb-f3bf-4be6-8386-a1f87c97b3e5",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listRunnerBook",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"selectionId\": \"<long>\",\n  \"handicap\": \"<number>\",\n  \"priceProjection\": {\n    \"priceData\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"virtualise\": \"<boolean>\",\n    \"rolloverStakes\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a6f6ffb1-d69c-4d0d-bca2-86dd98bdc3d3",
+          "name": "List current orders",
+          "request": {
+            "name": "List current orders",
+            "description": {
+              "content": "Returns a list of the customer's current (unmatched and matched) orders.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listCurrentOrders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"betIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orderProjection\": \"<string>\",\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "643fd827-3b56-4dcb-a819-3024b65f688d",
+              "name": "Current orders.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listCurrentOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"betIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orderProjection\": \"<string>\",\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currentOrders\": [\n    {\n      \"betId\": \"string\",\n      \"marketId\": \"string\",\n      \"selectionId\": 8893,\n      \"side\": \"LAY\",\n      \"status\": \"EXECUTABLE\",\n      \"priceSize\": {\n        \"price\": 5096.939184242908,\n        \"size\": 4527.913182952722\n      },\n      \"sizeMatched\": 8221.601095934888,\n      \"sizeRemaining\": 5863.382935152096\n    },\n    {\n      \"betId\": \"string\",\n      \"marketId\": \"string\",\n      \"selectionId\": 379,\n      \"side\": \"LAY\",\n      \"status\": \"EXECUTION_COMPLETE\",\n      \"priceSize\": {\n        \"price\": 6455.638825797158,\n        \"size\": 9079.277416440218\n      },\n      \"sizeMatched\": 4156.167208928603,\n      \"sizeRemaining\": 9328.065848037453\n    }\n  ],\n  \"moreAvailable\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c5ef0007-9f2b-4b86-b309-899c13b07ece",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listCurrentOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"betIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"orderProjection\": \"<string>\",\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89f862b2-c283-4d69-a8b5-3bfe518f6bb8",
+          "name": "List cleared (settled) orders",
+          "request": {
+            "name": "List cleared (settled) orders",
+            "description": {
+              "content": "Returns a list of settled bets based on the bet status, ordered by settled date.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "listClearedOrders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"betStatus\": \"<string>\",\n  \"eventTypeIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"settledDateRange\": {\n    \"from\": \"<dateTime>\",\n    \"to\": \"<dateTime>\"\n  },\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "abbb9917-bc5f-4d1f-901d-efdcfd3b0fc4",
+              "name": "Cleared orders.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listClearedOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"betStatus\": \"<string>\",\n  \"eventTypeIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"settledDateRange\": {\n    \"from\": \"<dateTime>\",\n    \"to\": \"<dateTime>\"\n  },\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "faf8de07-0c62-4ed7-869e-fddc721937a5",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "listClearedOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"betStatus\": \"<string>\",\n  \"eventTypeIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"marketIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"settledDateRange\": {\n    \"from\": \"<dateTime>\",\n    \"to\": \"<dateTime>\"\n  },\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "aa7a5536-b7b8-48bd-9465-27960fa83c89",
+          "name": "Place orders (bets)",
+          "request": {
+            "name": "Place orders (bets)",
+            "description": {
+              "content": "Places one or more orders on a market. On success a betId is returned per instruction. Supports LIMIT, LIMIT_ON_CLOSE, and MARKET_ON_CLOSE order types. Provide a customerRef for idempotency.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "placeOrders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"selectionId\": \"<long>\",\n      \"side\": \"<string>\",\n      \"orderType\": \"<string>\",\n      \"handicap\": \"<number>\",\n      \"limitOrder\": {\n        \"size\": \"<number>\",\n        \"price\": \"<number>\",\n        \"persistenceType\": \"<string>\"\n      }\n    },\n    {\n      \"selectionId\": \"<long>\",\n      \"side\": \"<string>\",\n      \"orderType\": \"<string>\",\n      \"handicap\": \"<number>\",\n      \"limitOrder\": {\n        \"size\": \"<number>\",\n        \"price\": \"<number>\",\n        \"persistenceType\": \"<string>\"\n      }\n    }\n  ],\n  \"customerRef\": \"<string>\",\n  \"customerStrategyRef\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "82757cf7-3a95-4b95-8850-9c6de2a67a25",
+              "name": "Place execution report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "placeOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"selectionId\": \"<long>\",\n      \"side\": \"<string>\",\n      \"orderType\": \"<string>\",\n      \"handicap\": \"<number>\",\n      \"limitOrder\": {\n        \"size\": \"<number>\",\n        \"price\": \"<number>\",\n        \"persistenceType\": \"<string>\"\n      }\n    },\n    {\n      \"selectionId\": \"<long>\",\n      \"side\": \"<string>\",\n      \"orderType\": \"<string>\",\n      \"handicap\": \"<number>\",\n      \"limitOrder\": {\n        \"size\": \"<number>\",\n        \"price\": \"<number>\",\n        \"persistenceType\": \"<string>\"\n      }\n    }\n  ],\n  \"customerRef\": \"<string>\",\n  \"customerStrategyRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"customerRef\": \"string\",\n  \"status\": \"FAILURE\",\n  \"errorCode\": \"string\",\n  \"marketId\": \"string\",\n  \"instructionReports\": [\n    {\n      \"status\": \"FAILURE\",\n      \"betId\": \"string\",\n      \"placedDate\": \"1998-08-18T09:14:11.314Z\",\n      \"averagePriceMatched\": 1436.1731528847322,\n      \"sizeMatched\": 1494.5721138512201,\n      \"orderStatus\": \"PENDING\"\n    },\n    {\n      \"status\": \"SUCCESS\",\n      \"betId\": \"string\",\n      \"placedDate\": \"1969-10-02T13:46:33.006Z\",\n      \"averagePriceMatched\": 3024.401052117476,\n      \"sizeMatched\": 1300.950023117915,\n      \"orderStatus\": \"EXECUTION_COMPLETE\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd4f2a6e-1966-4ae6-b7b2-28e1df80e822",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "placeOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"selectionId\": \"<long>\",\n      \"side\": \"<string>\",\n      \"orderType\": \"<string>\",\n      \"handicap\": \"<number>\",\n      \"limitOrder\": {\n        \"size\": \"<number>\",\n        \"price\": \"<number>\",\n        \"persistenceType\": \"<string>\"\n      }\n    },\n    {\n      \"selectionId\": \"<long>\",\n      \"side\": \"<string>\",\n      \"orderType\": \"<string>\",\n      \"handicap\": \"<number>\",\n      \"limitOrder\": {\n        \"size\": \"<number>\",\n        \"price\": \"<number>\",\n        \"persistenceType\": \"<string>\"\n      }\n    }\n  ],\n  \"customerRef\": \"<string>\",\n  \"customerStrategyRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9c4e0fc3-ba50-4754-a748-72ab6d29d8e0",
+          "name": "Cancel orders",
+          "request": {
+            "name": "Cancel orders",
+            "description": {
+              "content": "Cancels all bets, all bets on a market, or specific bets on a market (fully or partially).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "cancelOrders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"sizeReduction\": \"<number>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"sizeReduction\": \"<number>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b07d5d01-794c-4f0c-aa81-d73fbf4b7302",
+              "name": "Cancel execution report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "cancelOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"sizeReduction\": \"<number>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"sizeReduction\": \"<number>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08c6dab8-be65-440a-aa68-be51662448e7",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "cancelOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"sizeReduction\": \"<number>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"sizeReduction\": \"<number>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c1b6f9c4-d71f-4f79-8270-29fd03e36306",
+          "name": "Replace orders",
+          "request": {
+            "name": "Replace orders",
+            "description": {
+              "content": "Cancels and re-places existing unmatched bets at a new price in a single atomic operation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "replaceOrders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"newPrice\": \"<number>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"newPrice\": \"<number>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2ca4d0c2-b92f-4b9f-a8cf-4375a8fc9e85",
+              "name": "Replace execution report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "replaceOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"newPrice\": \"<number>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"newPrice\": \"<number>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a5dc2bb5-c72b-4739-aa88-1d17cee782fe",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "replaceOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"newPrice\": \"<number>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"newPrice\": \"<number>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57112af1-980f-4c80-86b3-ff11dc0ba296",
+          "name": "Update orders",
+          "request": {
+            "name": "Update orders",
+            "description": {
+              "content": "Updates non-exposure-changing fields on current orders (e.g. persistence type).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "betting",
+                "rest",
+                "v1.0",
+                "updateOrders",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"newPersistenceType\": \"<string>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"newPersistenceType\": \"<string>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "569881c7-2afe-4b04-95d6-7baaae0134e4",
+              "name": "Update execution report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "updateOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"newPersistenceType\": \"<string>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"newPersistenceType\": \"<string>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef7bde78-46a0-49b0-ad63-cf281a510b86",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "betting",
+                    "rest",
+                    "v1.0",
+                    "updateOrders",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"marketId\": \"<string>\",\n  \"instructions\": [\n    {\n      \"betId\": \"<string>\",\n      \"newPersistenceType\": \"<string>\"\n    },\n    {\n      \"betId\": \"<string>\",\n      \"newPersistenceType\": \"<string>\"\n    }\n  ],\n  \"customerRef\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.betfair.com/exchange",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Application"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1e0bb36a-17e6-418f-9674-85e6666f08f7",
+    "name": "Betfair Exchange API (API-NG) Accounts Betting API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like \"SportsAPING/v1.0/listMarketCatalogue\").\nAuthentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.\nEndpoints modeled here are grounded in Betfair's published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.\n\nContact Support:\n Name: API Evangelist\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}

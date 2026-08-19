@@ -1,0 +1,221 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Betfair Exchange API (API-NG) Accounts Betting API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Application",
+      "value": "{{X-Application}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Betting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List event types (sports)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listEventTypes/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of event types (e.g. Soccer, Horse Racing) matching the market filter."
+        },
+        {
+          "info": {
+            "name": "List competitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listCompetitions/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns competitions (e.g. leagues) associated with markets matching the filter."
+        },
+        {
+          "info": {
+            "name": "List events",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listEvents/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of events matching the market filter."
+        },
+        {
+          "info": {
+            "name": "List market types",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketTypes/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns market types (e.g. MATCH_ODDS, OVER_UNDER_25) matching the filter."
+        },
+        {
+          "info": {
+            "name": "List market catalogue",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketCatalogue/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of information about published (ACTIVE/SUSPENDED) markets that does not change (or changes very rarely). Use this to discover markets, their runners, and metadata; the returned marketId and runner selectionId are required to place bets."
+        },
+        {
+          "info": {
+            "name": "List market book (live prices)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listMarketBook/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns dynamic data about markets - prices, status, and available to back/lay depth - for a list of market IDs. Data request weighting applies; a single request has a maximum weighting of 200."
+        },
+        {
+          "info": {
+            "name": "List runner book",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listRunnerBook/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns dynamic price/depth data for a single runner in a single market."
+        },
+        {
+          "info": {
+            "name": "List current orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listCurrentOrders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of the customer's current (unmatched and matched) orders."
+        },
+        {
+          "info": {
+            "name": "List cleared (settled) orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/listClearedOrders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of settled bets based on the bet status, ordered by settled date."
+        },
+        {
+          "info": {
+            "name": "Place orders (bets)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/placeOrders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Places one or more orders on a market. On success a betId is returned per instruction. Supports LIMIT, LIMIT_ON_CLOSE, and MARKET_ON_CLOSE order types. Provide a customerRef for idempotency."
+        },
+        {
+          "info": {
+            "name": "Cancel orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/cancelOrders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancels all bets, all bets on a market, or specific bets on a market (fully or partially)."
+        },
+        {
+          "info": {
+            "name": "Replace orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/replaceOrders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancels and re-places existing unmatched bets at a new price in a single atomic operation."
+        },
+        {
+          "info": {
+            "name": "Update orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/betting/rest/v1.0/updateOrders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates non-exposure-changing fields on current orders (e.g. persistence type)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

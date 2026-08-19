@@ -1,0 +1,100 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Betfair Exchange API (API-NG) Accounts Historic Data API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Application",
+      "value": "{{X-Application}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Historic Data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get purchased data packages",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/GetMyData"
+          },
+          "docs": "Returns the historical data packages the customer has purchased. Full URL: https://historicdata.betfair.com/api/GetMyData. Authenticated with the ssoid session token header."
+        },
+        {
+          "info": {
+            "name": "Get collection filter options",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/GetCollectionOptions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the available filter options (sports, dates, market types) for a data collection."
+        },
+        {
+          "info": {
+            "name": "Get file count and size for a filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/GetAdvBasketDataSize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the number of files and total size that match a given filter."
+        },
+        {
+          "info": {
+            "name": "List downloadable files for a filter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/DownloadListOfFiles",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of file paths matching a given filter, to be fetched via DownloadFile."
+        },
+        {
+          "info": {
+            "name": "Download a historical data file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.betfair.com/exchange/DownloadFile",
+            "params": [
+              {
+                "name": "filePath",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Downloads a specific historical data file by path. Full URL, query-parameterized, under https://historicdata.betfair.com/api/DownloadFile."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

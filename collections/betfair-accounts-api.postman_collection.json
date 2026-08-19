@@ -1,0 +1,859 @@
+{
+  "item": [
+    {
+      "id": "c95bab14-2b35-4ce5-aff0-48f0ead1f666",
+      "name": "Accounts",
+      "description": {
+        "content": "AccountAPING - account funds, details, statement, and app keys.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d0bb451d-d962-4d83-8231-923bf2cfadc8",
+          "name": "Get account funds",
+          "request": {
+            "name": "Get account funds",
+            "description": {
+              "content": "Returns the available-to-bet amount, exposure, and balance for the account wallet.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "rest",
+                "v1.0",
+                "getAccountFunds",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"wallet\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2f961b46-0c4b-4fee-bcbc-3b0ceb0b7d25",
+              "name": "Account funds.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getAccountFunds",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"wallet\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"availableToBetBalance\": 1821.3224509759696,\n  \"exposure\": 6955.3390484852525,\n  \"retainedCommission\": 4690.219899596937,\n  \"exposureLimit\": 2711.295358704423,\n  \"discountRate\": 6883.108830914759,\n  \"pointsBalance\": 8574,\n  \"wallet\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ce5a934-207d-4e81-85aa-5cf2add65297",
+              "name": "Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getAccountFunds",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"wallet\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_APP_KEY\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9561218f-7a4e-4a74-be0e-b1628b1e8c01",
+          "name": "Get account details",
+          "request": {
+            "name": "Get account details",
+            "description": {
+              "content": "Returns the account's details - name, currency, locale, region, timezone, and discount rate.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "rest",
+                "v1.0",
+                "getAccountDetails",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f7185fc4-947e-4726-916a-ecd435261a7f",
+              "name": "Account details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getAccountDetails",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34bca3f0-f361-4f0e-ac85-ac7d3b748e69",
+              "name": "Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getAccountDetails",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_APP_KEY\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6b89c57-9cbd-4dc8-bc09-62dd3b650bac",
+          "name": "Get account statement",
+          "request": {
+            "name": "Get account statement",
+            "description": {
+              "content": "Returns the account statement - a ledger of financial transactions on the account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "rest",
+                "v1.0",
+                "getAccountStatement",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"locale\": \"<string>\",\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\",\n  \"itemDateRange\": {\n    \"from\": \"<dateTime>\",\n    \"to\": \"<dateTime>\"\n  },\n  \"includeItem\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "af8e28bb-3c4b-4eb0-bc8e-b5786ccc5e53",
+              "name": "Account statement.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getAccountStatement",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"locale\": \"<string>\",\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\",\n  \"itemDateRange\": {\n    \"from\": \"<dateTime>\",\n    \"to\": \"<dateTime>\"\n  },\n  \"includeItem\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "531b79a8-1a35-4661-a5a5-d4f492af797a",
+              "name": "Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getAccountStatement",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"locale\": \"<string>\",\n  \"fromRecord\": \"<integer>\",\n  \"recordCount\": \"<integer>\",\n  \"itemDateRange\": {\n    \"from\": \"<dateTime>\",\n    \"to\": \"<dateTime>\"\n  },\n  \"includeItem\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_APP_KEY\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "94bff70f-446c-469b-b6a6-5a7fe2af50fb",
+          "name": "List currency rates",
+          "request": {
+            "name": "List currency rates",
+            "description": {
+              "content": "Returns a list of currency rates based on a given base currency.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "rest",
+                "v1.0",
+                "listCurrencyRates",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromCurrency\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a22e2d66-1972-44fb-a638-3390e7e06c44",
+              "name": "Currency rates.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "listCurrencyRates",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fromCurrency\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21aa4df2-587f-41b9-b358-23abdffb38b5",
+              "name": "Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "listCurrencyRates",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"fromCurrency\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_APP_KEY\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83f77119-596d-4238-bc63-273b7b2bb6d9",
+          "name": "Get developer app keys",
+          "request": {
+            "name": "Get developer app keys",
+            "description": {
+              "content": "Returns the application keys owned by the developer/vendor calling the operation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "account",
+                "rest",
+                "v1.0",
+                "getDeveloperAppKeys",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "107c2528-c3b2-4e96-b7ec-222bf40e6291",
+              "name": "Developer application keys.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getDeveloperAppKeys",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ccbc3bc4-4aeb-405a-878a-05e22c1fd754",
+              "name": "Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "account",
+                    "rest",
+                    "v1.0",
+                    "getDeveloperAppKeys",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_APP_KEY\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.betfair.com/exchange",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Application"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e128beb6-e186-4669-9a49-18e4c24552d1",
+    "name": "Betfair Exchange API (API-NG) Accounts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like \"SportsAPING/v1.0/listMarketCatalogue\").\nAuthentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.\nEndpoints modeled here are grounded in Betfair's published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.\n\nContact Support:\n Name: API Evangelist\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}

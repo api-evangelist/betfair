@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Betfair Exchange API (API-NG) Accounts Identity API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Application",
+      "value": "{{X-Application}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Identity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Interactive login (obtain a session token)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/login",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "username",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Interactive login against Betfair identity SSO. Send username and password as application/x-www-form-urlencoded together with the X-Application (app key) header; the response returns a session token used as X-Authentication on all exchange calls. Full URL: https://identitysso.betfair.com/api/login . A certificate-based non-interactive login is available at https://identitysso-cert.betfair.com/api/certlogin."
+        },
+        {
+          "info": {
+            "name": "Extend the session token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/keepAlive"
+          },
+          "docs": "Refreshes the session token's inactivity timeout. Send the current session token as the X-Authentication header. Full URL: https://identitysso.betfair.com/api/keepAlive."
+        },
+        {
+          "info": {
+            "name": "Invalidate the session token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/logout"
+          },
+          "docs": "Logs out and invalidates the session token. Full URL: https://identitysso.betfair.com/api/logout."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

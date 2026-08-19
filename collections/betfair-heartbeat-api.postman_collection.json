@@ -1,0 +1,211 @@
+{
+  "item": [
+    {
+      "id": "5176bc59-10a1-490d-b464-16ebe83da6a9",
+      "name": "Heartbeat",
+      "description": {
+        "content": "HeartbeatAPING - dead man's switch that cancels unmatched bets.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "21aed43d-f88f-4ce4-9826-3ecd1466d765",
+          "name": "Heartbeat (dead man's switch)",
+          "request": {
+            "name": "Heartbeat (dead man's switch)",
+            "description": {
+              "content": "Registers a heartbeat with a preferred timeout (seconds). If Betfair does not receive a subsequent heartbeat within the timeout it will cancel the customer's unmatched bets. Preferred timeout is clamped between 10 and 300 seconds; a value of 0 disables the switch.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "heartbeat",
+                "rest",
+                "v1.0",
+                "heartbeat",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferredTimeoutSeconds\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "61c2319d-8d33-4374-be7e-b6ade33da61d",
+              "name": "Heartbeat report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "heartbeat",
+                    "rest",
+                    "v1.0",
+                    "heartbeat",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"preferredTimeoutSeconds\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"actionPerformed\": \"SOME_BETS_NOT_CANCELLED\",\n  \"actualTimeoutSeconds\": 8085\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d293893-bd67-40cf-b1b2-ae52df89784e",
+              "name": "Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "heartbeat",
+                    "rest",
+                    "v1.0",
+                    "heartbeat",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"preferredTimeoutSeconds\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"faultcode\": \"string\",\n  \"faultstring\": \"string\",\n  \"detail\": {\n    \"APINGException\": {\n      \"errorCode\": \"INVALID_SESSION_INFORMATION\",\n      \"errorDetails\": \"string\",\n      \"requestUUID\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.betfair.com/exchange",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Application"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d96d9fbb-b5ea-4253-ba16-fed46a43ca61",
+    "name": "Betfair Exchange API (API-NG) Accounts Heartbeat API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like \"SportsAPING/v1.0/listMarketCatalogue\").\nAuthentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.\nEndpoints modeled here are grounded in Betfair's published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.\n\nContact Support:\n Name: API Evangelist\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}

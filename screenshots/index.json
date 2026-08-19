@@ -1,0 +1,11 @@
+[
+  {
+    "repo": "betfair",
+    "captured_at": "2026-08-17T122904",
+    "source_url": "https://www.betfair.com",
+    "source_type": "Website",
+    "file": "betfair-2026-08-17T122904.png",
+    "bytes": 50141,
+    "capture": "playwright-local"
+  }
+]

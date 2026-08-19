@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Betfair Exchange API (API-NG) Accounts API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Application",
+      "value": "{{X-Application}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get account funds",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getAccountFunds/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the available-to-bet amount, exposure, and balance for the account wallet."
+        },
+        {
+          "info": {
+            "name": "Get account details",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getAccountDetails/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the account's details - name, currency, locale, region, timezone, and discount rate."
+        },
+        {
+          "info": {
+            "name": "Get account statement",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getAccountStatement/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the account statement - a ledger of financial transactions on the account."
+        },
+        {
+          "info": {
+            "name": "List currency rates",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/listCurrencyRates/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns a list of currency rates based on a given base currency."
+        },
+        {
+          "info": {
+            "name": "Get developer app keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/account/rest/v1.0/getDeveloperAppKeys/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns the application keys owned by the developer/vendor calling the operation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

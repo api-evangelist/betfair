@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Betfair Exchange API (API-NG) Accounts Heartbeat API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-Application",
+      "value": "{{X-Application}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Heartbeat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Heartbeat (dead man's switch)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.betfair.com/exchange/heartbeat/rest/v1.0/heartbeat/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Registers a heartbeat with a preferred timeout (seconds). If Betfair does not receive a subsequent heartbeat within the timeout it will cancel the customer's unmatched bets. Preferred timeout is clamped between 10 and 300 seconds; a value of 0 disables the switch."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

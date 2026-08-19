@@ -1,0 +1,554 @@
+{
+  "item": [
+    {
+      "id": "be104473-79a5-47df-8034-f8927e6ec3b3",
+      "name": "Historic Data",
+      "description": {
+        "content": "Download purchased historical exchange market data.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "28433a73-dcef-40cc-ace3-1b67cfe62dff",
+          "name": "Get purchased data packages",
+          "request": {
+            "name": "Get purchased data packages",
+            "description": {
+              "content": "Returns the historical data packages the customer has purchased. Full URL: https://historicdata.betfair.com/api/GetMyData. Authenticated with the ssoid session token header.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "GetMyData"
+              ],
+              "host": [
+                "historicdata",
+                "betfair",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4374a10e-4d66-4a58-a41c-0bb953f28f7b",
+              "name": "List of purchased data packages.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "GetMyData"
+                  ],
+                  "host": [
+                    "historicdata",
+                    "betfair",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "01ff2767-e9ce-4750-aa73-cc00a2a605c9",
+          "name": "Get collection filter options",
+          "request": {
+            "name": "Get collection filter options",
+            "description": {
+              "content": "Returns the available filter options (sports, dates, market types) for a data collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "GetCollectionOptions"
+              ],
+              "host": [
+                "historicdata",
+                "betfair",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sport\": \"<string>\",\n  \"plan\": \"<string>\",\n  \"fromDay\": \"<integer>\",\n  \"fromMonth\": \"<integer>\",\n  \"fromYear\": \"<integer>\",\n  \"toDay\": \"<integer>\",\n  \"toMonth\": \"<integer>\",\n  \"toYear\": \"<integer>\",\n  \"marketTypesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"countriesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fileTypeCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ac73f6c4-ca61-4b41-adb1-87d2ff0c4a60",
+              "name": "Collection options.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "GetCollectionOptions"
+                  ],
+                  "host": [
+                    "historicdata",
+                    "betfair",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sport\": \"<string>\",\n  \"plan\": \"<string>\",\n  \"fromDay\": \"<integer>\",\n  \"fromMonth\": \"<integer>\",\n  \"fromYear\": \"<integer>\",\n  \"toDay\": \"<integer>\",\n  \"toMonth\": \"<integer>\",\n  \"toYear\": \"<integer>\",\n  \"marketTypesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"countriesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fileTypeCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "84d65204-900e-4431-883c-3631c5c537d7",
+          "name": "Get file count and size for a filter",
+          "request": {
+            "name": "Get file count and size for a filter",
+            "description": {
+              "content": "Returns the number of files and total size that match a given filter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "GetAdvBasketDataSize"
+              ],
+              "host": [
+                "historicdata",
+                "betfair",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sport\": \"<string>\",\n  \"plan\": \"<string>\",\n  \"fromDay\": \"<integer>\",\n  \"fromMonth\": \"<integer>\",\n  \"fromYear\": \"<integer>\",\n  \"toDay\": \"<integer>\",\n  \"toMonth\": \"<integer>\",\n  \"toYear\": \"<integer>\",\n  \"marketTypesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"countriesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fileTypeCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0d20ba02-2425-449e-ad24-c18480a32482",
+              "name": "File count and size.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "GetAdvBasketDataSize"
+                  ],
+                  "host": [
+                    "historicdata",
+                    "betfair",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sport\": \"<string>\",\n  \"plan\": \"<string>\",\n  \"fromDay\": \"<integer>\",\n  \"fromMonth\": \"<integer>\",\n  \"fromYear\": \"<integer>\",\n  \"toDay\": \"<integer>\",\n  \"toMonth\": \"<integer>\",\n  \"toYear\": \"<integer>\",\n  \"marketTypesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"countriesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fileTypeCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"fileCount\": 1632,\n  \"totalSizeMB\": 5291.35880453224\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f2d9838f-d18a-49bb-99f9-5f471084810a",
+          "name": "List downloadable files for a filter",
+          "request": {
+            "name": "List downloadable files for a filter",
+            "description": {
+              "content": "Returns a list of file paths matching a given filter, to be fetched via DownloadFile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "DownloadListOfFiles"
+              ],
+              "host": [
+                "historicdata",
+                "betfair",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sport\": \"<string>\",\n  \"plan\": \"<string>\",\n  \"fromDay\": \"<integer>\",\n  \"fromMonth\": \"<integer>\",\n  \"fromYear\": \"<integer>\",\n  \"toDay\": \"<integer>\",\n  \"toMonth\": \"<integer>\",\n  \"toYear\": \"<integer>\",\n  \"marketTypesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"countriesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fileTypeCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "67c3231d-f0ea-4bc1-be02-e8131c9d3a0a",
+              "name": "List of file paths.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "DownloadListOfFiles"
+                  ],
+                  "host": [
+                    "historicdata",
+                    "betfair",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sport\": \"<string>\",\n  \"plan\": \"<string>\",\n  \"fromDay\": \"<integer>\",\n  \"fromMonth\": \"<integer>\",\n  \"fromYear\": \"<integer>\",\n  \"toDay\": \"<integer>\",\n  \"toMonth\": \"<integer>\",\n  \"toYear\": \"<integer>\",\n  \"marketTypesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"countriesCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"fileTypeCollection\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"string\",\n  \"string\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "adf38e91-8a8d-477b-abd1-d22055ea7e0f",
+          "name": "Download a historical data file",
+          "request": {
+            "name": "Download a historical data file",
+            "description": {
+              "content": "Downloads a specific historical data file by path. Full URL, query-parameterized, under https://historicdata.betfair.com/api/DownloadFile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "DownloadFile"
+              ],
+              "host": [
+                "historicdata",
+                "betfair",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filePath",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "437e9dda-fc85-4d31-81d3-f392b1b65f0e",
+              "name": "The file contents (compressed market data).",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "DownloadFile"
+                  ],
+                  "host": [
+                    "historicdata",
+                    "betfair",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "filePath",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Application",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.betfair.com/exchange",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-Application"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "50bd744d-8b48-4f3f-9498-52565d27a1fd",
+    "name": "Betfair Exchange API (API-NG) Accounts Historic Data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like \"SportsAPING/v1.0/listMarketCatalogue\").\nAuthentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.\nEndpoints modeled here are grounded in Betfair's published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.\n\nContact Support:\n Name: API Evangelist\n Email: kin@apievangelist.com",
+      "type": "text/plain"
+    }
+  }
+}
