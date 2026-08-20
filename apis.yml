@@ -44,6 +44,11 @@ apis:
   name: Betfair Exchange Stream API
   tags:
   - Streaming
+  - Real-Time
+  - Market Data
+  - TCP
+  tags_raw:
+  - Streaming
   - Real Time
   - Market Data
   - TCP
@@ -67,6 +72,11 @@ apis:
   name: Betfair Vendor API
   tags:
   - Vendor
+  - Affiliates
+  - Authentication
+  - Web App
+  tags_raw:
+  - Vendor
   - Affiliate
   - OAuth2
   - Web Apps
@@ -87,6 +97,8 @@ apis:
   humanURL: https://developer.betfair.com/en/get-started/
   baseURL: https://api.betfair.com/exchange/betting
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
