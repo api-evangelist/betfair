@@ -14,6 +14,18 @@ description: Betfair operates the world's largest online betting exchange, where
   updates. A Historic Data API and a licensed Vendor (affiliate) API round out
   the platform. Auth combines an Application Key with a session token (ssoid)
   obtained from Betfair's identity SSO login.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
