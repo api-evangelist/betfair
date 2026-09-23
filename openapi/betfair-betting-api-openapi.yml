@@ -1,11 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Betfair Exchange API (API-NG) Accounts Betting API
-  description: 'OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG). Betfair exposes the exchange as lightweight JSON-RPC and REST operations over HTTPS. This document models the per-operation REST surface (each operation is an HTTP POST whose JSON body carries the operation parameters) for the Betting API (SportsAPING), the Accounts API (AccountAPING), and the Heartbeat API (HeartbeatAPING), plus the Betfair identity SSO login endpoints and the Historic Data API. The same operations are also callable as JSON-RPC 2.0 at the corresponding /json-rpc/v1 endpoints (method names like "SportsAPING/v1.0/listMarketCatalogue").
-
-    Authentication uses two headers on every exchange call: X-Application (your Application Key) and X-Authentication (a session token / ssoid obtained from the identity SSO login). The real-time Exchange Stream API is a separate raw SSL/TCP socket protocol (CRLF-delimited JSON, NOT WebSocket) and is described in asyncapi/betfair-asyncapi.yml, not here.
-
-    Endpoints modeled here are grounded in Betfair''s published API reference; request/response schemas are simplified to the primary fields and marked as representative where full field sets are large.'
+  title: Betfair Exchange API (API-NG) Betting API
+  description: OpenAPI description of the request/response HTTP surface of the Betfair Exchange API (API-NG).
   version: 1.0.0
   contact:
     name: API Evangelist
@@ -487,6 +483,68 @@ paths:
           $ref: '#/components/responses/BettingError'
 components:
   schemas:
+    TimeRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
+    PriceProjection:
+      type: object
+      properties:
+        priceData:
+          type: array
+          items:
+            type: string
+            enum:
+            - SP_AVAILABLE
+            - SP_TRADED
+            - EX_BEST_OFFERS
+            - EX_ALL_OFFERS
+            - EX_TRADED
+        virtualise:
+          type: boolean
+        rolloverStakes:
+          type: boolean
+    Runner:
+      type: object
+      properties:
+        selectionId:
+          type: integer
+          format: int64
+        handicap:
+          type: number
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - WINNER
+          - LOSER
+          - REMOVED
+          - REMOVED_VACANT
+          - HIDDEN
+        lastPriceTraded:
+          type: number
+        totalMatched:
+          type: number
+        ex:
+          type: object
+          properties:
+            availableToBack:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+            availableToLay:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+            tradedVolume:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
     ApiError:
       type: object
       description: Betfair APINGException / AccountAPINGException envelope. In JSON-RPC the error is returned under the JSON-RPC "error" member; in REST it is the HTTP 400 body.
@@ -519,6 +577,123 @@ components:
                   type: string
                 requestUUID:
                   type: string
+    MarketFilter:
+      type: object
+      description: Filter selecting a subset of markets. All fields optional.
+      properties:
+        textQuery:
+          type: string
+        eventTypeIds:
+          type: array
+          items:
+            type: string
+        eventIds:
+          type: array
+          items:
+            type: string
+        competitionIds:
+          type: array
+          items:
+            type: string
+        marketIds:
+          type: array
+          items:
+            type: string
+        marketCountries:
+          type: array
+          items:
+            type: string
+        marketTypeCodes:
+          type: array
+          items:
+            type: string
+        marketStartTime:
+          $ref: '#/components/schemas/TimeRange'
+        inPlayOnly:
+          type: boolean
+        turnInPlayEnabled:
+          type: boolean
+    PlaceInstruction:
+      type: object
+      required:
+      - selectionId
+      - side
+      - orderType
+      properties:
+        orderType:
+          type: string
+          enum:
+          - LIMIT
+          - LIMIT_ON_CLOSE
+          - MARKET_ON_CLOSE
+        selectionId:
+          type: integer
+          format: int64
+        handicap:
+          type: number
+        side:
+          type: string
+          enum:
+          - BACK
+          - LAY
+        limitOrder:
+          type: object
+          properties:
+            size:
+              type: number
+            price:
+              type: number
+            persistenceType:
+              type: string
+              enum:
+              - LAPSE
+              - PERSIST
+              - MARKET_ON_CLOSE
+    CurrentOrderSummaryReport:
+      type: object
+      properties:
+        currentOrders:
+          type: array
+          items:
+            type: object
+            properties:
+              betId:
+                type: string
+              marketId:
+                type: string
+              selectionId:
+                type: integer
+                format: int64
+              side:
+                type: string
+                enum:
+                - BACK
+                - LAY
+              status:
+                type: string
+                enum:
+                - EXECUTION_COMPLETE
+                - EXECUTABLE
+              priceSize:
+                $ref: '#/components/schemas/PriceSize'
+              sizeMatched:
+                type: number
+              sizeRemaining:
+                type: number
+        moreAvailable:
+          type: boolean
+    EventTypeResult:
+      type: object
+      properties:
+        eventType:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        marketCount:
+          type: integer
     PlaceExecutionReport:
       type: object
       properties:
@@ -561,39 +736,6 @@ components:
                 - EXECUTION_COMPLETE
                 - EXECUTABLE
                 - EXPIRED
-    CurrentOrderSummaryReport:
-      type: object
-      properties:
-        currentOrders:
-          type: array
-          items:
-            type: object
-            properties:
-              betId:
-                type: string
-              marketId:
-                type: string
-              selectionId:
-                type: integer
-                format: int64
-              side:
-                type: string
-                enum:
-                - BACK
-                - LAY
-              status:
-                type: string
-                enum:
-                - EXECUTION_COMPLETE
-                - EXECUTABLE
-              priceSize:
-                $ref: '#/components/schemas/PriceSize'
-              sizeMatched:
-                type: number
-              sizeRemaining:
-                type: number
-        moreAvailable:
-          type: boolean
     MarketBook:
       type: object
       properties:
@@ -616,42 +758,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Runner'
-    PlaceInstruction:
-      type: object
-      required:
-      - selectionId
-      - side
-      - orderType
-      properties:
-        orderType:
-          type: string
-          enum:
-          - LIMIT
-          - LIMIT_ON_CLOSE
-          - MARKET_ON_CLOSE
-        selectionId:
-          type: integer
-          format: int64
-        handicap:
-          type: number
-        side:
-          type: string
-          enum:
-          - BACK
-          - LAY
-        limitOrder:
-          type: object
-          properties:
-            size:
-              type: number
-            price:
-              type: number
-            persistenceType:
-              type: string
-              enum:
-              - LAPSE
-              - PERSIST
-              - MARKET_ON_CLOSE
     PriceSize:
       type: object
       properties:
@@ -659,116 +765,6 @@ components:
           type: number
         size:
           type: number
-    EventTypeResult:
-      type: object
-      properties:
-        eventType:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-        marketCount:
-          type: integer
-    PriceProjection:
-      type: object
-      properties:
-        priceData:
-          type: array
-          items:
-            type: string
-            enum:
-            - SP_AVAILABLE
-            - SP_TRADED
-            - EX_BEST_OFFERS
-            - EX_ALL_OFFERS
-            - EX_TRADED
-        virtualise:
-          type: boolean
-        rolloverStakes:
-          type: boolean
-    MarketFilter:
-      type: object
-      description: Filter selecting a subset of markets. All fields optional.
-      properties:
-        textQuery:
-          type: string
-        eventTypeIds:
-          type: array
-          items:
-            type: string
-        eventIds:
-          type: array
-          items:
-            type: string
-        competitionIds:
-          type: array
-          items:
-            type: string
-        marketIds:
-          type: array
-          items:
-            type: string
-        marketCountries:
-          type: array
-          items:
-            type: string
-        marketTypeCodes:
-          type: array
-          items:
-            type: string
-        marketStartTime:
-          $ref: '#/components/schemas/TimeRange'
-        inPlayOnly:
-          type: boolean
-        turnInPlayEnabled:
-          type: boolean
-    Runner:
-      type: object
-      properties:
-        selectionId:
-          type: integer
-          format: int64
-        handicap:
-          type: number
-        status:
-          type: string
-          enum:
-          - ACTIVE
-          - WINNER
-          - LOSER
-          - REMOVED
-          - REMOVED_VACANT
-          - HIDDEN
-        lastPriceTraded:
-          type: number
-        totalMatched:
-          type: number
-        ex:
-          type: object
-          properties:
-            availableToBack:
-              type: array
-              items:
-                $ref: '#/components/schemas/PriceSize'
-            availableToLay:
-              type: array
-              items:
-                $ref: '#/components/schemas/PriceSize'
-            tradedVolume:
-              type: array
-              items:
-                $ref: '#/components/schemas/PriceSize'
-    TimeRange:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-        to:
-          type: string
-          format: date-time
     MarketCatalogue:
       type: object
       properties:
