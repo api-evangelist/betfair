@@ -16,15 +16,19 @@ description: Betfair operates the world's largest online betting exchange, where
   obtained from Betfair's identity SSO login.
 deliveryModel:
   model: saas
-  open_source: false
+  license_evidence:
+    not_product:
+    - betfair/stream-api-sample-code
+  open_source: unknown
   commercial: true
   callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: high
+  confidence: low
   source:
   - openapi
   - pricing
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: paid
@@ -49,6 +53,7 @@ tags:
 - Market Data
 - JSON-RPC
 - Streaming
+- Sports
 created: '2026-07-03'
 modified: '2026-07-03'
 specificationVersion: '0.23'

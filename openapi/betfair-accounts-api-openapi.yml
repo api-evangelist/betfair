@@ -161,32 +161,6 @@ paths:
           $ref: '#/components/responses/AccountError'
 components:
   schemas:
-    TimeRange:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-        to:
-          type: string
-          format: date-time
-    AccountFundsResponse:
-      type: object
-      properties:
-        availableToBetBalance:
-          type: number
-        exposure:
-          type: number
-        retainedCommission:
-          type: number
-        exposureLimit:
-          type: number
-        discountRate:
-          type: number
-        pointsBalance:
-          type: integer
-        wallet:
-          type: string
     ApiError:
       type: object
       description: Betfair APINGException / AccountAPINGException envelope. In JSON-RPC the error is returned under the JSON-RPC "error" member; in REST it is the HTTP 400 body.
@@ -219,6 +193,32 @@ components:
                   type: string
                 requestUUID:
                   type: string
+    AccountFundsResponse:
+      type: object
+      properties:
+        availableToBetBalance:
+          type: number
+        exposure:
+          type: number
+        retainedCommission:
+          type: number
+        exposureLimit:
+          type: number
+        discountRate:
+          type: number
+        pointsBalance:
+          type: integer
+        wallet:
+          type: string
+    TimeRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
   responses:
     AccountError:
       description: Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.
