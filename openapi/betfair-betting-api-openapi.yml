@@ -483,6 +483,18 @@ paths:
           $ref: '#/components/responses/BettingError'
 components:
   schemas:
+    EventTypeResult:
+      type: object
+      properties:
+        eventType:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+        marketCount:
+          type: integer
     PlaceExecutionReport:
       type: object
       properties:
@@ -525,105 +537,15 @@ components:
                 - EXECUTION_COMPLETE
                 - EXECUTABLE
                 - EXPIRED
-    MarketCatalogue:
+    TimeRange:
       type: object
       properties:
-        marketId:
+        from:
           type: string
-        marketName:
+          format: date-time
+        to:
           type: string
-        totalMatched:
-          type: number
-        runners:
-          type: array
-          items:
-            type: object
-            properties:
-              selectionId:
-                type: integer
-                format: int64
-              runnerName:
-                type: string
-              handicap:
-                type: number
-              sortPriority:
-                type: integer
-    PriceSize:
-      type: object
-      properties:
-        price:
-          type: number
-        size:
-          type: number
-    CurrentOrderSummaryReport:
-      type: object
-      properties:
-        currentOrders:
-          type: array
-          items:
-            type: object
-            properties:
-              betId:
-                type: string
-              marketId:
-                type: string
-              selectionId:
-                type: integer
-                format: int64
-              side:
-                type: string
-                enum:
-                - BACK
-                - LAY
-              status:
-                type: string
-                enum:
-                - EXECUTION_COMPLETE
-                - EXECUTABLE
-              priceSize:
-                $ref: '#/components/schemas/PriceSize'
-              sizeMatched:
-                type: number
-              sizeRemaining:
-                type: number
-        moreAvailable:
-          type: boolean
-    Runner:
-      type: object
-      properties:
-        selectionId:
-          type: integer
-          format: int64
-        handicap:
-          type: number
-        status:
-          type: string
-          enum:
-          - ACTIVE
-          - WINNER
-          - LOSER
-          - REMOVED
-          - REMOVED_VACANT
-          - HIDDEN
-        lastPriceTraded:
-          type: number
-        totalMatched:
-          type: number
-        ex:
-          type: object
-          properties:
-            availableToBack:
-              type: array
-              items:
-                $ref: '#/components/schemas/PriceSize'
-            availableToLay:
-              type: array
-              items:
-                $ref: '#/components/schemas/PriceSize'
-            tradedVolume:
-              type: array
-              items:
-                $ref: '#/components/schemas/PriceSize'
+          format: date-time
     MarketBook:
       type: object
       properties:
@@ -678,42 +600,72 @@ components:
                   type: string
                 requestUUID:
                   type: string
-    PlaceInstruction:
+    PriceSize:
       type: object
-      required:
-      - selectionId
-      - side
-      - orderType
       properties:
-        orderType:
-          type: string
-          enum:
-          - LIMIT
-          - LIMIT_ON_CLOSE
-          - MARKET_ON_CLOSE
+        price:
+          type: number
+        size:
+          type: number
+    Runner:
+      type: object
+      properties:
         selectionId:
           type: integer
           format: int64
         handicap:
           type: number
-        side:
+        status:
           type: string
           enum:
-          - BACK
-          - LAY
-        limitOrder:
+          - ACTIVE
+          - WINNER
+          - LOSER
+          - REMOVED
+          - REMOVED_VACANT
+          - HIDDEN
+        lastPriceTraded:
+          type: number
+        totalMatched:
+          type: number
+        ex:
           type: object
           properties:
-            size:
-              type: number
-            price:
-              type: number
-            persistenceType:
-              type: string
-              enum:
-              - LAPSE
-              - PERSIST
-              - MARKET_ON_CLOSE
+            availableToBack:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+            availableToLay:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+            tradedVolume:
+              type: array
+              items:
+                $ref: '#/components/schemas/PriceSize'
+    MarketCatalogue:
+      type: object
+      properties:
+        marketId:
+          type: string
+        marketName:
+          type: string
+        totalMatched:
+          type: number
+        runners:
+          type: array
+          items:
+            type: object
+            properties:
+              selectionId:
+                type: integer
+                format: int64
+              runnerName:
+                type: string
+              handicap:
+                type: number
+              sortPriority:
+                type: integer
     MarketFilter:
       type: object
       description: Filter selecting a subset of markets. All fields optional.
@@ -750,18 +702,42 @@ components:
           type: boolean
         turnInPlayEnabled:
           type: boolean
-    EventTypeResult:
+    PlaceInstruction:
       type: object
+      required:
+      - selectionId
+      - side
+      - orderType
       properties:
-        eventType:
+        orderType:
+          type: string
+          enum:
+          - LIMIT
+          - LIMIT_ON_CLOSE
+          - MARKET_ON_CLOSE
+        selectionId:
+          type: integer
+          format: int64
+        handicap:
+          type: number
+        side:
+          type: string
+          enum:
+          - BACK
+          - LAY
+        limitOrder:
           type: object
           properties:
-            id:
+            size:
+              type: number
+            price:
+              type: number
+            persistenceType:
               type: string
-            name:
-              type: string
-        marketCount:
-          type: integer
+              enum:
+              - LAPSE
+              - PERSIST
+              - MARKET_ON_CLOSE
     PriceProjection:
       type: object
       properties:
@@ -779,15 +755,39 @@ components:
           type: boolean
         rolloverStakes:
           type: boolean
-    TimeRange:
+    CurrentOrderSummaryReport:
       type: object
       properties:
-        from:
-          type: string
-          format: date-time
-        to:
-          type: string
-          format: date-time
+        currentOrders:
+          type: array
+          items:
+            type: object
+            properties:
+              betId:
+                type: string
+              marketId:
+                type: string
+              selectionId:
+                type: integer
+                format: int64
+              side:
+                type: string
+                enum:
+                - BACK
+                - LAY
+              status:
+                type: string
+                enum:
+                - EXECUTION_COMPLETE
+                - EXECUTABLE
+              priceSize:
+                $ref: '#/components/schemas/PriceSize'
+              sizeMatched:
+                type: number
+              sizeRemaining:
+                type: number
+        moreAvailable:
+          type: boolean
   requestBodies:
     MarketFilterBody:
       required: true

@@ -160,6 +160,13 @@ paths:
         default:
           $ref: '#/components/responses/AccountError'
 components:
+  responses:
+    AccountError:
+      description: Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   schemas:
     ApiError:
       type: object
@@ -193,6 +200,15 @@ components:
                   type: string
                 requestUUID:
                   type: string
+    TimeRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
     AccountFundsResponse:
       type: object
       properties:
@@ -210,22 +226,6 @@ components:
           type: integer
         wallet:
           type: string
-    TimeRange:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-        to:
-          type: string
-          format: date-time
-  responses:
-    AccountError:
-      description: Accounts API error. Returns an AccountAPINGException with an errorCode such as INVALID_SESSION_INFORMATION or NO_APP_KEY.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   securitySchemes:
     appKey:
       type: apiKey
