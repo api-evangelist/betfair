@@ -84,18 +84,6 @@ paths:
                 $ref: '#/components/schemas/SsoStatusResponse'
 components:
   schemas:
-    SsoStatusResponse:
-      type: object
-      description: Keep-alive / logout status.
-      properties:
-        token:
-          type: string
-        product:
-          type: string
-        status:
-          type: string
-        error:
-          type: string
     LoginResponse:
       type: object
       description: Interactive login response from identity SSO.
@@ -111,6 +99,18 @@ components:
           - SUCCESS
           - FAIL
           - LIMITED_ACCESS
+        error:
+          type: string
+    SsoStatusResponse:
+      type: object
+      description: Keep-alive / logout status.
+      properties:
+        token:
+          type: string
+        product:
+          type: string
+        status:
+          type: string
         error:
           type: string
   securitySchemes:

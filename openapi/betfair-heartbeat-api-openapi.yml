@@ -61,6 +61,13 @@ paths:
         default:
           $ref: '#/components/responses/BettingError'
 components:
+  responses:
+    BettingError:
+      description: Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   schemas:
     ApiError:
       type: object
@@ -94,13 +101,6 @@ components:
                   type: string
                 requestUUID:
                   type: string
-  responses:
-    BettingError:
-      description: Betting API error. REST returns HTTP 400 with an APINGException whose errorCode explains the failure (e.g. INVALID_SESSION_INFORMATION, INVALID_APP_KEY, TOO_MUCH_DATA, INVALID_INPUT_DATA).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   securitySchemes:
     appKey:
       type: apiKey
