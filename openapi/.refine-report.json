@@ -1,28 +1,20 @@
 {
   "provider": "betfair",
   "sources": [
-    "_original/betfair-openapi.yml"
+    "_original/betfair-openapi.json"
   ],
   "outputs": [
-    "betfair-accounts-api-openapi.yml",
-    "betfair-betting-api-openapi.yml",
-    "betfair-heartbeat-api-openapi.yml",
-    "betfair-historic-data-api-openapi.yml",
-    "betfair-identity-api-openapi.yml"
+    "betfair-request-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "betfair-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "betfair-openapi.json: upgraded swagger 2.0 -> OpenAPI 3.2.0",
+    "betfair-openapi.json: tagged paths POST /request -> Request",
+    "betfair-openapi.json: declared missing tag: Request",
+    "apis.yml register: written (+1 apis, 3 total)"
   ],
-  "skipped": [
-    "betfair-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "betfair-betting-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "betfair-heartbeat-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "betfair-historic-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "betfair-identity-api-openapi.yml: previously refined output, superseded by openapi/_original/"
-  ]
+  "skipped": []
 }
